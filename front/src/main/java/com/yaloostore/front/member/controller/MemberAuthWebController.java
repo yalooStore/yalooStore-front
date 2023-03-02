@@ -27,14 +27,12 @@ public class MemberAuthWebController {
 
 
     /**
-     * 회원가입 화면으로 이동하기 위한 get handler입니다.
+     * 회원가입 화면으로 이동합니다.
      * */
     @GetMapping("/signup")
     public String signupForm(){
         return "auth/signup-form";
     }
-
-
 
 
     @PostMapping("/signup")
@@ -56,6 +54,9 @@ public class MemberAuthWebController {
 
     }
 
+    /**
+     * 로그인 화면으로 가는 로그인 폼 컨트롤러입니다.
+     * */
     @GetMapping("/login")
     public String loginForm(
             HttpSession session,
