@@ -22,16 +22,20 @@
                         로그인
                     </a>
                 </div>
-                <div class="logout-btn me-3" sec:authorize="isAuthenticated()" >
-                    <a class="btn btn-primary"
-                        href="/">로그아웃</a>
+                <div class="userInfo-icon me-3" sec:authorize="isAuthenticated()">
+                    <a href="/mypage">
+                        <span class="material-icons">account_circle</span>
+                    </a>
                 </div>
-                <div class="signup-btn me-3" sec:authorize="isAnonymous()">
+                <div class="logout-btn me-3" sec:authorize="isAuthenticated()" >
+                    <a href="/"><span class="material-icons">logout</span></a>
+                </div>
+                <div class="signup-btn me-2" sec:authorize="isAnonymous()">
                     <a class="btn btn-light"
                        href="/members/signup">회원가입</a>
                 </div>
                 <form class="d-flex">
-                    <button class="btn btn-outline-dark" type="submit">
+                    <button class="btn btn-light" type="submit">
                         <i class="bi-cart-fill me-1"></i>
                         Cart
                         <span class="badge bg-dark text-white ms-1 rounded-pill">0</span>
