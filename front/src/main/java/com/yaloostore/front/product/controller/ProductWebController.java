@@ -8,18 +8,21 @@ import com.yaloostore.front.product.dto.response.ProductTypeResponseDto;
 import com.yaloostore.front.product.service.inter.ProductTypeSystemService;
 import com.yaloostore.front.product.service.inter.QuerydslProductSystemService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
 @Controller
 @RequestMapping("/products")
 @RequiredArgsConstructor
+@Slf4j
 public class ProductWebController {
 
 
@@ -42,6 +45,8 @@ public class ProductWebController {
 
         Map<String, Object> pageMap = getPage(products);
         model.addAllAttributes(pageMap);
+        List<ProductTypeResponseDto> allProductType = productTypeSystemService.findAllProductType();
+
 
 
         model.addAllAttributes(Map.of(
@@ -50,7 +55,16 @@ public class ProductWebController {
                 "types", productTypeSystemService.findAllProductType()
         ));
 
-        return "main/product_all_list";
+        log.info("get typeId: {}", allProductType.get(1));
+
+        log.info("typeId: {}", typeId);
+
+        log.info("types: {}", productTypeSystemService.findAllProductType());
+
+        log.info("products: {}",products.getDataList());
+
+
+        return "main/product/products";
     }
 
     private Map<String, Object> getPage(PaginationResponseDto<ProductBookResponseDto> products) {
