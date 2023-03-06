@@ -26,7 +26,7 @@ public class SecurityConfig {
         http.authorizeHttpRequests(authorize -> authorize
                 .requestMatchers("/mypage/**").hasRole("ROLE_USER")
                 .requestMatchers("/manage/**").hasRole("ROLE_ADMIN")
-                .requestMatchers("/", "/members/signup").permitAll());
+                .requestMatchers("/", "/products","/members/signup").permitAll());
                 //.anyRequest().authenticated());
 
 

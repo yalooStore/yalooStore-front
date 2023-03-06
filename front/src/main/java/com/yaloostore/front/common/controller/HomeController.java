@@ -30,25 +30,14 @@ public class HomeController {
                        @CookieValue(required = false, name = COOKIE)Cookie cookie,
                        HttpServletResponse response){
 
-        List<ProductBookNewOneResponse> newOneBookProduct = querydslProductSystemService.getNewOneBookProduct();
+        List<ProductBookNewOneResponse> newOneBookProduct = querydslProductSystemService.findNewOneBookProduct();
         model.addAttribute(
                 "newOneBookProduct",
-                querydslProductSystemService.getNewOneBookProduct()
+                querydslProductSystemService.findNewOneBookProduct()
         );
-
-        log.info("new one list: {}", querydslProductSystemService.getNewOneBookProduct());
-
-        for (ProductBookNewOneResponse newOne : newOneBookProduct) {
-            System.out.println(newOne.getThumbnailUrl());
-        }
-
 
         return "main/index";
     }
-//    @GetMapping("/")
-//    public String main(){
-//        return "main/index";
-//    }
 
 
     @GetMapping("/mypage")
