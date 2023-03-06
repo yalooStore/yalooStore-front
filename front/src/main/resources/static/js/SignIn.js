@@ -33,7 +33,7 @@ export default function SignIn() {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
         console.log({
-            email: data.get('email'),
+            memberId: data.get('memberId'),
             password: data.get('password'),
         });
     };
@@ -61,10 +61,10 @@ export default function SignIn() {
                             margin="normal"
                             required
                             fullWidth
-                            id="email"
-                            label="Email Address"
-                            name="email"
-                            autoComplete="email"
+                            id="memberId"
+                            label="memberId Address"
+                            name="memberId"
+                            autoComplete="memberId"
                             autoFocus
                         />
                         <TextField
@@ -96,7 +96,7 @@ export default function SignIn() {
                                 </Link>
                             </Grid>
                             <Grid item>
-                                <Link href="#" variant="body2">
+                                <Link href="/members/signup" variant="body2">
                                     {"Don't have an account? Sign Up"}
                                 </Link>
                             </Grid>

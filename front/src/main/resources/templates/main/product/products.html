@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
+    <title>Shop Homepage - Start Bootstrap Template</title>
+    <!-- Favicon-->
+    <link rel="icon" type="image/x-icon" th:href="@{../../../static/assets/favicon.ico}"/>
+    <!-- Bootstrap icons-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet"/>
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link th:href="@{../../../static/css/styles.css}" rel="stylesheet"/>
+
+
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+    rel="stylesheet">
+
+    <!--slick carousel cdn-->
+    <script src="//code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css"/>
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
+      integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
+      crossorigin="anonymous">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
+      integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
+      crossorigin="anonymous">
+
+    </script>
+    <style>
+
+
+                                  img {
+                                  width: 300px;
+            height: 150px;
+            object-fit: cover;
+        }
+
+    </style>
+
+
+</head>
+
+<body class="bg-white">
+<!--header-->
+<div th:replace="~{common/fragments/header::fragment-header}"></div>
+<!--navbar-->
+<div th:replace="~{common/fragments/navbar::fragment-navbar}"></div>
+
+<!--body start-->
+<div class="container-fluid d-flex justify-content-center">
+    <div class="w-75">
+        <!--h1 product type-->
+        <div class="pt-5 ps-5 ms-5">
+            <div th:if="${#strings.isEmpty(typeId)}">
+                <h1>전체 상품</h1>
+            </div>
+            <div th:if="${not #strings.isEmpty(typeId)}">
+                <div th:if="${typeId} eq 1">
+                    <h1>전체 상품</h1>
+                </div>
+                <div>
+                    <h1 th:text="${types.get(typeId).getKoName()}">전체 상품</h1>
+                </div>
+            </div>
+        </div>
+
+        <div class="container-md m-auto p-3 d-flex justify-content-center border-bottom col-12 col-sm-auto">
+            <a class="border-0 shadow-none btn-outline-light text-dark btn btn-outline-light ps-4 pe-4 pt-2 pb-2 rounded-3 me-lg-3"
+               th:value="1">전체 상품</a>
+            <a class="border-0 shadow-none btn-outline-light text-dark btn ps-4 pe-4 pt-2 pb-2 rounded-3 me-lg-3" th:value="2"><span
+                    class="badge bg-danger m-1">B</span>베스트셀러</a>
+            <a class="border-0 shadow-none btn-outline-light text-dark btn ps-4 pe-4 pt-2 pb-2 rounded-3 me-lg-3"
+               th:value="3">추천</a>
+            <a class="border-0 shadow-none btn-outline-light text-dark btn ps-4 pe-4 pt-2 pb-2 rounded-3 me-lg-3"
+               th:value="4">인기</a>
+            <a class="border-0 shadow-none btn-outline-light text-dark btn ps-4 pe-4 pt-2 pb-2 rounded-3 me-lg-3" th:value="5"><span
+                    class="badge bg-warning m-1">N</span>신작</a>
+            <a class="border-0 shadow-none btn-outline-light text-dark btn ps-4 pe-4 pt-2 pb-2 rounded-3 me-lg-3"
+               th:value="6">할인<span class="badge bg-primary m-1">%</span></a>
+            <a class="border-0 shadow-none btn-outline-light text-dark btn ps-4 pe-4 pt-2 pb-2 rounded-3 me-lg-3" th:value="7">새로
+                입고된</a>
+        </div>
+
+
+        <div th:each="product, productStat:${products}" class="align-content-center mb-0 mt-3 border-bottom">
+
+            <div class="row d-flex justify-content-center align-content-center">
+                <div class="card-body col-12 p-3 d-flex justify-content-center">
+
+                    <!--body - book information image-->
+                    <div class="w-25 card-img row">
+                        <div class="col-2">
+                            <span th:text="${productStat.count}+'.'"></span>
+                            <span><input type="checkbox"></span></div>
+                        <img class="border-0 p-0 col-10 img-thumbnail" th:src="${product.thumbnailUrl}">
+                    </div>
+
+                    <!--body - book information content -->
+                    <div class="card-item ps-5 w-75 d-inline-block text-truncate">
+                        <a class="btn border-0 shadow-none text-start " th:href="|/products/${product.productId}|">
+                            <h1 class="" th:text="${product.productName}"></h1></a>
+                        <div class="ps-3">
+                            <!--            해당부분은 작가를 찾아서 전체 작가 조회 리스트를 뿌려주는 페이지, 로직을 짠 뒤에 작성하도록  <a th:href="|/products/|"> -->
+                            <!--                <span th:text="${product.authorName} + ' | '"></span>-->
+                            <!--              </a>-->
+                            <span th:text="${product.authorName}"></span>
+                            <strong> | </strong>
+                            <span th:text="${product.publisherName}"></span>
+                        </div>
+                        <div class="ps-3">
+                              <span style="text-decoration: line-through;"
+                                    th:text="${#numbers.formatInteger(product.rawPrice, 1, 'COMMA')} + '원'"></span>
+                            <span class="material-icons align-content-center">arrow_right_alt</span>
+                            <span th:text="${#numbers.formatInteger(product.fixedPrice, 1, 'COMMA')} + '원'"></span>
+                        </div>
+
+                    </div>
+
+                    <div class="card-item w-25 d-flex justify-content-center">
+                        <div class="row">
+                            <div class="col-12">
+                                <a th:if="${product.isSelled}"
+                                   class="btn btn-warning col-lg-6 col-sm-2 pb-2 mb-3 text-center text-light">장바구니</a>
+                                <a class="btn btn-primary col-lg-6 col-sm-2 pb-2 mb-3 text-center text-light ">바로구매</a>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+</div>
+
+
+<!--footer-->
+<div th:replace="~{common/fragments/footer::fragment-footer}"></div>
+
+
+</body>
+</html>

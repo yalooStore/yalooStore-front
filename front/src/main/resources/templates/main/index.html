@@ -28,6 +28,12 @@
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css" />
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css" />
 
+    <!--tabler CDN additional-->
+    <script src="https://cdn.jsdelivr.net/npm/@tabler/core@1.0.0-beta17/dist/js/tabler.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/core@1.0.0-beta17/dist/css/tabler.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/core@1.0.0-beta17/dist/css/tabler-flags.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/core@1.0.0-beta17/dist/css/tabler-payments.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/core@1.0.0-beta17/dist/css/tabler-vendors.min.css">
 
     <script>
         $(document).ready(function(){
@@ -71,10 +77,9 @@
 
 
 
-
 </head>
 
-<body>
+<body class="bg-white">
 
         <!--header-->
         <div th:replace="~{common/fragments/header::fragment-header}"></div>
@@ -84,20 +89,21 @@
 
 
         <!--body start-->
-        <!-- body - container / new stock / new Item -->
+        <!-- body - container / new stock / new Item  img-responsive img-responsive-3x4  -->
         <div class="page-body container-xl">
+            <!--slide 1-->
             <div class="row w-75 mt-5 m-auto">
                 <div class="col-12">
-                    <div class="card px-2 pb-2">
-                            <span class="badge bg-danger position-absolute mt-4 start-100 translate-middle rounded-3">
+                    <div class="card px-2 pb-2 border-0 shadow p-3 mb-5 bg-white rounded">
+                        <div class="ribbon bg-red">
                                 New <br>
                                 Stock
-                            </span>
+                            </div>
                         <h2 class="align-content-center text-center mb-0 mt-3">새로 입고된 상품</h2>
                         <div id="newOneProduct" class="multiple-items col-12">
                             <div class="card m-3" th:each="product: ${newOneBookProduct}">
                                 <a th:href="|/products/${product.productId}|">
-                                    <img class="img-responsive img-responsive-3x4 card-img-top" th:onerror=""
+                                    <img class="card-img-top" th:onerror=""
                                          th:src="${product.getThumbnailUrl()}">
                                 </a>
                                 <div class="card-body">
@@ -120,19 +126,19 @@
                 </div>
             </div>
 
-            <!-- 인기상품 ㄷ... -->
-            <div class="row w-75 mt-5 m-auto mb-5">
+            <!-- slide 2 -->
+            <div class="row w-75 mt-5 m-auto mb-5 ">
                 <div class="col-12">
-                    <div class="card px-2 pb-2">
-                            <span class="badge bg-warning position-absolute mt-4 start-100 translate-middle rounded-3">
+                    <div class="card px-2 pb-2 border-0 shadow p-3 mb-5 bg-white rounded">
+                            <div class="ribbon bg-yellow">
                                 New <br>
                                 Item
-                            </span>
+                            </div>
                         <h2 class="align-content-center text-center mb-0 mt-3">신작</h2>
                         <div id="" class="multiple-items col-12 w-100">
                             <div class="card m-3" th:each="product: ${newOneBookProduct}">
                                 <a th:href="|/products/${product.productId}|">
-                                    <img class="img-responsive img-responsive-3x4 card-img-top"
+                                    <img class="card-img-top"
                                          th:src="${product.getThumbnailUrl()}">
                                 </a>
                                 <div class="card-body">
