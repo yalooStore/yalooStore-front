@@ -17,4 +17,6 @@ public class ProductTypeResponseDto {
     private String typeKoName;
 
 
+
+
 }

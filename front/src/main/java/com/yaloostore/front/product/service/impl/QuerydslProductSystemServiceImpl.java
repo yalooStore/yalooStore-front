@@ -4,23 +4,18 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.yalooStore.common_utils.dto.ResponseDto;
 import com.yaloostore.front.common.dto.request.PageRequestDto;
 import com.yaloostore.front.common.dto.response.PaginationResponseDto;
-import com.yaloostore.front.product.dto.response.ProductBookNewOneResponse;
+import com.yaloostore.front.product.dto.response.ProductBookNewStockResponse;
 import com.yaloostore.front.product.dto.response.ProductBookResponseDto;
 import com.yaloostore.front.product.service.inter.QuerydslProductSystemService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
-import org.springframework.security.access.method.P;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.lang.reflect.Type;
 import java.net.URI;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -41,7 +36,7 @@ public class QuerydslProductSystemServiceImpl implements QuerydslProductSystemSe
      * {@inheritDoc}
      * */
     @Override
-    public List<ProductBookNewOneResponse> findNewOneBookProduct() {
+    public List<ProductBookNewStockResponse> findNewOneBookProduct() {
 
         URI uri = UriComponentsBuilder
                 .fromUriString(shopUrl)
@@ -50,14 +45,14 @@ public class QuerydslProductSystemServiceImpl implements QuerydslProductSystemSe
                 .build()
                 .toUri();
 
-        ResponseEntity<List<ProductBookNewOneResponse>> responseEntity=
+        ResponseEntity<List<ProductBookNewStockResponse>> responseEntity=
                 restTemplate.exchange(uri,
                         HttpMethod.GET,
                         getHttpEntity(),
-                        new ParameterizedTypeReference<List<ProductBookNewOneResponse>>() {});
+                        new ParameterizedTypeReference<List<ProductBookNewStockResponse>>() {});
 
 
-        List<ProductBookNewOneResponse> newOneResponseList = responseEntity.getBody();
+        List<ProductBookNewStockResponse> newOneResponseList = responseEntity.getBody();
         return Objects.requireNonNull(newOneResponseList);
     }
 

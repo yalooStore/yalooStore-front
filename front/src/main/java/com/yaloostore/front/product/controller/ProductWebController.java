@@ -33,7 +33,7 @@ public class ProductWebController {
      * 사용자용 전체 상품 조회 view 반환 컨트롤러
      * */
     @GetMapping
-    public String products(@RequestParam(required = false) Integer typeId,
+    public String products(@RequestParam(required = false, name = "typeId") Integer typeId,
                            @RequestParam(required = false, defaultValue = "0") Integer page,
                            @RequestParam(required = false, defaultValue = "15") Integer size,
                            Model model){
@@ -61,7 +61,8 @@ public class ProductWebController {
 
         log.info("types: {}", productTypeSystemService.findAllProductType());
 
-        log.info("products: {}",products.getDataList());
+        log.info("totalpage: {}",products.getTotalPage());
+
 
 
         return "main/product/products";

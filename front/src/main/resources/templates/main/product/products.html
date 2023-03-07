@@ -39,9 +39,8 @@
     </script>
     <style>
 
-
-                                  img {
-                                  width: 300px;
+        img {
+            width: 300px;
             height: 150px;
             object-fit: cover;
         }
@@ -61,35 +60,57 @@
 <div class="container-fluid d-flex justify-content-center">
     <div class="w-75">
         <!--h1 product type-->
-        <div class="pt-5 ps-5 ms-5">
+        <div class="pt-5 text-center">
             <div th:if="${#strings.isEmpty(typeId)}">
                 <h1>전체 상품</h1>
             </div>
             <div th:if="${not #strings.isEmpty(typeId)}">
-                <div th:if="${typeId} eq 1">
-                    <h1>전체 상품</h1>
-                </div>
-                <div>
-                    <h1 th:text="${types.get(typeId).getKoName()}">전체 상품</h1>
-                </div>
+                <h1 th:text="${types.get(typeId-1).getTypeKoName()}"></h1>
             </div>
         </div>
 
-        <div class="container-md m-auto p-3 d-flex justify-content-center border-bottom col-12 col-sm-auto">
-            <a class="border-0 shadow-none btn-outline-light text-dark btn btn-outline-light ps-4 pe-4 pt-2 pb-2 rounded-3 me-lg-3"
-               th:value="1">전체 상품</a>
-            <a class="border-0 shadow-none btn-outline-light text-dark btn ps-4 pe-4 pt-2 pb-2 rounded-3 me-lg-3" th:value="2"><span
-                    class="badge bg-danger m-1">B</span>베스트셀러</a>
-            <a class="border-0 shadow-none btn-outline-light text-dark btn ps-4 pe-4 pt-2 pb-2 rounded-3 me-lg-3"
-               th:value="3">추천</a>
-            <a class="border-0 shadow-none btn-outline-light text-dark btn ps-4 pe-4 pt-2 pb-2 rounded-3 me-lg-3"
-               th:value="4">인기</a>
-            <a class="border-0 shadow-none btn-outline-light text-dark btn ps-4 pe-4 pt-2 pb-2 rounded-3 me-lg-3" th:value="5"><span
-                    class="badge bg-warning m-1">N</span>신작</a>
-            <a class="border-0 shadow-none btn-outline-light text-dark btn ps-4 pe-4 pt-2 pb-2 rounded-3 me-lg-3"
-               th:value="6">할인<span class="badge bg-primary m-1">%</span></a>
-            <a class="border-0 shadow-none btn-outline-light text-dark btn ps-4 pe-4 pt-2 pb-2 rounded-3 me-lg-3" th:value="7">새로
-                입고된</a>
+        <div class="container-md m-auto p-3 d-flex justify-content-center border-bottom col-12 col-sm-auto" >
+            <button class="border-0 shadow-none btn-outline-light text-dark btn btn-outline-light ps-4 pe-4 pt-2 pb-2 rounded-3 me-lg-3"
+                    th:value="''"
+                    onclick="selectType(this.value)">
+                전체 상품
+            </button>
+            <button class="border-0 shadow-none btn-outline-light text-dark btn btn-outline-light ps-4 pe-4 pt-2 pb-2 rounded-3 me-lg-3"
+                    th:value="1"
+                    onclick="selectType(this.value)">
+                없음
+            </button>
+            <button class="border-0 shadow-none btn-outline-light text-dark btn btn-outline-light ps-4 pe-4 pt-2 pb-2 rounded-3 me-lg-3"
+                    th:value="2"
+                    onclick="selectType(this.value)">
+                베스트셀러
+            </button>
+            <button class="border-0 shadow-none btn-outline-light text-dark btn btn-outline-light ps-4 pe-4 pt-2 pb-2 rounded-3 me-lg-3"
+                    th:value="3"
+                    onclick="selectType(this.value)">
+                추천
+            </button>
+            <button class="border-0 shadow-none btn-outline-light text-dark btn btn-outline-light ps-4 pe-4 pt-2 pb-2 rounded-3 me-lg-3"
+                    th:value="4"
+                    onclick="selectType(this.value)">
+                인기
+            </button>
+            <button class="border-0 shadow-none btn-outline-light text-dark btn btn-outline-light ps-4 pe-4 pt-2 pb-2 rounded-3 me-lg-3"
+                    th:value="5"
+                    onclick="selectType(this.value)">
+                신작
+            </button>
+            <button class="border-0 shadow-none btn-outline-light text-dark btn btn-outline-light ps-4 pe-4 pt-2 pb-2 rounded-3 me-lg-3"
+                    th:value="6"
+                    onclick="selectType(this.value)">
+                할인
+            </button>
+            <button class="border-0 shadow-none btn-outline-light text-dark btn btn-outline-light ps-4 pe-4 pt-2 pb-2 rounded-3 me-lg-3"
+                    th:value="7"
+                    onclick="selectType(this.value)">
+                새로 입고된
+            </button>
+
         </div>
 
 
@@ -148,11 +169,21 @@
 
 
 </div>
-
-
+<!--pagination nav-->
+<div th:replace="~{common/utils/pagination-nav::paging('/products', ${#strings.isEmpty(typeId)? '': '&typeId='+typeId})}"></div>
 <!--footer-->
 <div th:replace="~{common/fragments/footer::fragment-footer}"></div>
 
+<script>
+    function selectType(typeId) {
+        if (typeId === '') {
+            window.location.href = '/products';
+        } else {
+            window.location.href = '/products?typeId=' + typeId;
+        }
+    }
+
+</script>
 
 </body>
 </html>

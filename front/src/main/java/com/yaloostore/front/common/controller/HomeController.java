@@ -1,7 +1,7 @@
 package com.yaloostore.front.common.controller;
 
 
-import com.yaloostore.front.product.dto.response.ProductBookNewOneResponse;
+import com.yaloostore.front.product.dto.response.ProductBookNewStockResponse;
 import com.yaloostore.front.product.service.inter.QuerydslProductSystemService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
@@ -30,7 +30,7 @@ public class HomeController {
                        @CookieValue(required = false, name = COOKIE)Cookie cookie,
                        HttpServletResponse response){
 
-        List<ProductBookNewOneResponse> newOneBookProduct = querydslProductSystemService.findNewOneBookProduct();
+        List<ProductBookNewStockResponse> newOneBookProduct = querydslProductSystemService.findNewOneBookProduct();
         model.addAttribute(
                 "newOneBookProduct",
                 querydslProductSystemService.findNewOneBookProduct()

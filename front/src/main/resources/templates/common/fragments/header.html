@@ -7,43 +7,43 @@
 <body th:fragment="fragment-header">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
           rel="stylesheet">
-<!--border-bottom을 주어서 아래 줄을 그을 수 있게 ~-->
-<header class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
-    <div class="container-fluid px-4 px-lg-5 mt-1 text-end">
-        <a class="navbar-brand" href="/">
-            <!--<img src="/docs/4.0/assets/brand/bootstrap-solid.svg" width="30" height="30" class="d-inline-block align-top" alt="">-->
-            <span class="material-icons">search</span>
-            Bootstrap
-        </a>
-            <div class="d-flex">
-                <div class="login-btn me-2" sec:authorize="isAnonymous()">
-                    <a class="btn btn-primary"
-                       href="/members/login">
-                        로그인
-                    </a>
+
+    <header class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+        <div class="container-fluid px-4 px-lg-5 mt-1 text-end">
+            <a class="navbar-brand" href="/">
+                <!--<img src="/docs/4.0/assets/brand/bootstrap-solid.svg" width="30" height="30" class="d-inline-block align-top" alt="">-->
+                <span class="material-icons">search</span>
+                Yaloo Store
+            </a>
+                <div class="d-flex">
+                    <div class="login-btn me-2" sec:authorize="isAnonymous()">
+                        <a class="btn btn-primary shadow-none"
+                           href="/members/login">
+                            로그인
+                        </a>
+                    </div>
+                    <div class="userInfo-icon me-3 shadow-none" sec:authorize="isAuthenticated()">
+                        <a href="/mypage">
+                            <span class="material-icons">account_circle</span>
+                        </a>
+                    </div>
+                    <div class="logout-btn me-3 shadow-none" sec:authorize="isAuthenticated()" >
+                        <a href="/"><span class="material-icons">logout</span></a>
+                    </div>
+                    <div class="signup-btn me-2" sec:authorize="isAnonymous()">
+                        <a class="btn btn-light shadow-none"
+                           href="/members/signup">회원가입</a>
+                    </div>
+                    <form class="d-flex">
+                        <button class="btn btn-light shadow-none" type="submit">
+                            <i class="bi-cart-fill me-1"></i>
+                            Cart
+                            <span class="badge bg-dark text-white ms-1 rounded-pill">0</span>
+                        </button>
+                    </form>
                 </div>
-                <div class="userInfo-icon me-3" sec:authorize="isAuthenticated()">
-                    <a href="/mypage">
-                        <span class="material-icons">account_circle</span>
-                    </a>
-                </div>
-                <div class="logout-btn me-3" sec:authorize="isAuthenticated()" >
-                    <a href="/"><span class="material-icons">logout</span></a>
-                </div>
-                <div class="signup-btn me-2" sec:authorize="isAnonymous()">
-                    <a class="btn btn-light"
-                       href="/members/signup">회원가입</a>
-                </div>
-                <form class="d-flex">
-                    <button class="btn btn-light" type="submit">
-                        <i class="bi-cart-fill me-1"></i>
-                        Cart
-                        <span class="badge bg-dark text-white ms-1 rounded-pill">0</span>
-                    </button>
-                </form>
             </div>
         </div>
-    </div>
-</header>
+    </header>
 </body>
 </html>
