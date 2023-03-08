@@ -113,6 +113,7 @@
 
         </div>
 
+        <!--body content start-->
 
         <div th:each="product, productStat:${products}" class="align-content-center mb-0 mt-3 border-bottom">
 
@@ -150,10 +151,12 @@
 
                     <div class="card-item w-25 d-flex justify-content-center">
                         <div class="row">
-                            <div class="col-12">
+                            <div class="col-12 ms-5">
                                 <a th:if="${product.isSelled}"
-                                   class="btn btn-warning col-lg-6 col-sm-2 pb-2 mb-3 text-center text-light">장바구니</a>
-                                <a class="btn btn-primary col-lg-6 col-sm-2 pb-2 mb-3 text-center text-light ">바로구매</a>
+                                   th:href="|/carts|"
+                                   class="btn btn-yellow border-0 col-lg-6 col-sm-2 pb-2 mb-3 text-center text-light">장바구니</a>
+                                <a class="btn btn-danger border-0 col-lg-6 col-sm-2 pb-2 mb-3 text-center text-light"
+                                   th:href="|/payments|">바로구매</a>
                             </div>
 
                         </div>
@@ -184,6 +187,8 @@
     }
 
 </script>
+
+
 
 </body>
 </html>
