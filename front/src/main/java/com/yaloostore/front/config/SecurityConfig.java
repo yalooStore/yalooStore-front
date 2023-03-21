@@ -1,9 +1,9 @@
 package com.yaloostore.front.config;
 
 
+import com.yaloostore.front.auth.CustomAuthenticationManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.EnableMBeanExport;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -28,14 +28,13 @@ public class SecurityConfig {
                 .requestMatchers("/manage/**").hasRole("ROLE_ADMIN")
                 .anyRequest().permitAll());
 
+        http.formLogin()
+                .loginPage("/members/login");
 
-
-        http.formLogin(form -> form.loginPage("/members/login").permitAll()
-                    .defaultSuccessUrl("/"));
-
-        http.logout(logout -> logout
-                .logoutUrl("/members/logout"));
-
+        http.logout()
+                .logoutUrl("/logout").
+                addLogoutHandler(customLogoutHandler())
+                .logoutSuccessUrl("/");
 
         http.httpBasic().disable();
 
@@ -43,6 +42,10 @@ public class SecurityConfig {
         http.cors().disable();
         http.csrf().disable();
         return http.build();
+    }
+
+    private CustomAuthenticationManager customLogoutHandler() {
+        return null;
     }
 
 

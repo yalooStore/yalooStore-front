@@ -1,0 +1,6 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="yalooStore-front">
+    <output-path>$PROJECT_DIR$/out/artifacts/yalooStore_front</output-path>
+    <root id="archive" name="yalooStore-front.war" />
+  </artifact>
+</component>
