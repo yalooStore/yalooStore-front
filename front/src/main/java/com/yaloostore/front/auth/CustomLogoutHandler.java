@@ -1,0 +1,79 @@
+package com.yaloostore.front.auth;
+
+import com.yaloostore.front.common.utils.CookieUtils;
+import com.yaloostore.front.member.adapter.MemberAdapter;
+import com.yaloostore.front.member.jwt.AuthInformation;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.logout.LogoutFilter;
+import org.springframework.security.web.authentication.logout.LogoutHandler;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
+
+import java.util.Objects;
+
+import static com.yaloostore.front.member.jwt.AuthUtil.JWT_CODE;
+import static com.yaloostore.front.member.jwt.AuthUtil.UUID_CODE;
+
+@RequiredArgsConstructor
+@Slf4j
+public class CustomLogoutHandler implements LogoutHandler {
+
+    private final RedisTemplate<String, Object> redisTemplate;
+    private final MemberAdapter memberAdapter;
+    private final CookieUtils cookieUtils;
+
+
+    /**
+     * 회원 로그아웃에 사용되는 custom 로그아웃 핸들러
+     *
+     * 세션을 사용해서 로그인을 유지하는 등의 작업을 진행하기 때문에 로그아웃 시에도 세션 삭제 작업이 필요하다.
+     * */
+    @Override
+    public void logout(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
+
+        //1. 세션이 존재할 경우에만 세션을 반환하고 존재하지 않을 땐 새로 생성 없이 null 반환
+        HttpSession session = request.getSession(false);
+
+        //1-2. 세션이 없을 땐 해당 로직을 그냥 종료
+        if(Objects.isNull(session)){
+            log.info("already logout");
+            return;
+        }
+        //3. 세션 완전 삭제 작업
+        session.invalidate();
+
+        String uuid = cookieUtils.getValue(request.getCookies(), UUID_CODE.getValue());
+
+        if(Objects.isNull(uuid)){
+            return;
+        }
+
+        AuthInformation authInformation = (AuthInformation) redisTemplate.opsForHash().get(uuid, JWT_CODE.getValue());
+
+        //레디스에서 해당
+        redisTemplate.opsForHash().delete(uuid, JWT_CODE.getValue());
+        Cookie cart = cookieUtils.setupCookie("CART_NO","", 0);
+        response.addCookie(cart);
+
+        Cookie authCookie = cookieUtils.setupCookie(UUID_CODE.getValue(), "", 0);
+        response.addCookie(authCookie);
+
+        memberAdapter.logout(uuid, authInformation.getAccessToken());
+
+        SecurityContext context = SecurityContextHolder.getContext();
+        SecurityContextHolder.clearContext();
+        context.setAuthentication(null);
+
+
+    }
+
+
+}

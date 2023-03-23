@@ -2,8 +2,13 @@ package com.yaloostore.front.config;
 
 
 import com.yaloostore.front.auth.CustomAuthenticationManager;
+import com.yaloostore.front.auth.CustomLogoutHandler;
+import com.yaloostore.front.common.utils.CookieUtils;
+import com.yaloostore.front.member.adapter.MemberAdapter;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -12,7 +17,13 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfig {
+
+
+    private final RedisTemplate<String ,Object> redisTemplate;
+    private final MemberAdapter memberAdapter;
+    private final CookieUtils cookieUtils;
 
 
     /**
@@ -32,8 +43,8 @@ public class SecurityConfig {
                 .loginPage("/members/login");
 
         http.logout()
-                .logoutUrl("/logout").
-                addLogoutHandler(customLogoutHandler())
+                .logoutUrl("/logout")
+                .addLogoutHandler(customLogoutHandler())
                 .logoutSuccessUrl("/");
 
         http.httpBasic().disable();
@@ -44,8 +55,8 @@ public class SecurityConfig {
         return http.build();
     }
 
-    private CustomAuthenticationManager customLogoutHandler() {
-        return null;
+    private CustomLogoutHandler customLogoutHandler() {
+        return new CustomLogoutHandler(redisTemplate, memberAdapter,cookieUtils);
     }
 
 
