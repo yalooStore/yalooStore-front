@@ -6,6 +6,7 @@ import com.yaloostore.front.common.dto.request.PageRequestDto;
 import com.yaloostore.front.common.dto.response.PaginationResponseDto;
 import com.yaloostore.front.product.dto.response.ProductBookNewStockResponse;
 import com.yaloostore.front.product.dto.response.ProductBookResponseDto;
+import com.yaloostore.front.product.dto.response.ProductDetailViewResponse;
 import com.yaloostore.front.product.service.inter.QuerydslProductSystemService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -73,6 +74,31 @@ public class QuerydslProductSystemServiceImpl implements QuerydslProductSystemSe
 
         return Objects.requireNonNull(products.getBody()).getData();
     }
+
+
+    /**
+     * {@inheritDoc}
+     * */
+    @Override
+    public ProductDetailViewResponse findProductDetailByProductId(Long productId) {
+
+        URI uri = UriComponentsBuilder
+                .fromUriString(shopUrl)
+                .path(PATH + "/" + productId)
+                .encode()
+                .build()
+                .toUri();
+
+        ResponseEntity<ResponseDto<ProductDetailViewResponse>> detailView =
+                restTemplate.exchange(uri,
+                        HttpMethod.GET,
+                        getHttpEntity(),
+                        new ParameterizedTypeReference<ResponseDto<ProductDetailViewResponse>>() {
+                        });
+
+        return Objects.requireNonNull(detailView.getBody().getData());
+    }
+
 
     /**
      * restTemplate에서 HttpEntity 사용이 중복됨에 따라서 메소드로 추출해서 사용할 수 있도록 한다.

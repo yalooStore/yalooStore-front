@@ -38,9 +38,9 @@ public class MemberAdapter {
 
         HttpEntity<LogoutRequest> entity = new HttpEntity<>(logoutRequest, headers);
 
-        //getAuth server로 보내야하지만 서버를 지금은 두개만 쓸거라 shop으로 보낸다.
+        //Auth(인증, 인가 관련) 서버로 보내야하지만 서버를 지금은 두개만 쓸거라 shop 서버로 보낸다.
         URI uri = UriComponentsBuilder.fromUriString(gatewayConfig.getShopUrl())
-                .path("/logout")
+                .path("/api/service/auth/logout")
                 .encode()
                 .build()
                 .toUri();

@@ -48,75 +48,80 @@ public class CartWebController {
 
     /**
      * 회원, 비회원이 담아둔 장바구니 view를 반환합니다.
-     *
+     * <p>
      * cookie
      * - CART_NO가 있을 때 = 장바구니에 넣은 물건이 존재할 때, 회원이 로그인을 했을 때
      * - CART_NO이 없을 때 = 장바구니에 넣은 물건이 없을 때
-     * */
+     */
     @GetMapping
     public String cart(
-            @CookieValue(value = "CART_NO", required = false)Cookie cookie,
+            @CookieValue(value = "CART_NO", required = false) Cookie cookie,
             @CookieValue(value = "AUTH_MEMBER", required = false) Cookie member,
             Model model,
             HttpServletResponse httpServletResponse
-    ){
+    ) {
 
         List<CartViewResponse> ebookCart = new ArrayList<>();
         List<CartViewResponse> deliveryCart = new ArrayList<>();
 
 
-
         //회원이 해당 쿠키 삭제를 할 경우 다시 쿠키 생성해서 넣어준다 ~
-        if (Objects.nonNull(member)){
+        if (Objects.nonNull(member)) {
             String loginId = SecurityContextHolder.getContext().getAuthentication().getName();
             cookie = cookieUtils.setupCookie("CART_NO", loginId, 60 * 60 * 24 * 30);
 
+            log.info("cookie : {}", cookie);
             httpServletResponse.addCookie(cookie);
 
         }
 
-        if(Objects.nonNull(cookie)){
-            if(cookie.getName().equals("anonymousUser"))
-            return "main/cart/cart";
-        }
 
-
-        //장바구니에서 가져온 데이터를 사용해서 key, value1....n개를 저장해줌
-        Map<Object, Object> cart = redisTemplate.opsForHash().entries(cookie.getValue());
-        log.info("cart = {}", cart);
-
-        MultiValueMap<String, String> multiValueMap = new LinkedMultiValueMap<>();
-        cart.keySet().forEach(key -> {
-            multiValueMap.add(key.toString(), cart.get(key).toString());
-        });
-
-
-        HttpHeaders headers = new HttpHeaders();
-        HttpEntity<String> entity = new HttpEntity<>(headers);
-
-        UriComponents uri = UriComponentsBuilder.fromHttpUrl(gatewayConfig.getShopUrl())
-                .path("/api/service/cart").queryParam(multiValueMap.toString()).encode().build();
-        log.info("uri : {} ", uri);
-
-
-        ResponseDto<List<CartViewResponse>> response = restTemplate.exchange(uri.toUri(),
-                HttpMethod.POST,
-                entity,
-                new ParameterizedTypeReference<ResponseDto<List<CartViewResponse>>>() {
-                }).getBody();
-
-
-        Objects.requireNonNull(Objects.requireNonNull(response).getData()).forEach(product ->{
-            if(Boolean.FALSE.equals(product.getIsDeleted())){
-                if (Boolean.TRUE.equals(product.getIsEbook())){
-                    ebookCart.add(product);
-                } else {
-                    deliveryCart.add(product);
-                }
+        //CART_NO 쿠키 존재 x -> 장바구니에 넣은 물건이 없는 경우
+        //CART_NO 쿠키 존재 -> 장바구니에 넣은 물건이 있는 경우, 회원 로그인을 한 경우(위에서 member 관련 쿠키가 있는지 확인해주어서 가능)
+        if (Objects.nonNull(cookie)) {
+            if (cookie.getName().equals("anonymousUser")) {
+                return "main/cart/cart";
             }
-        });
 
+
+            //장바구니에서 가져온 데이터를 사용해서 key, value1....n개를 저장해줌
+            Map<Object, Object> cart = redisTemplate.opsForHash().entries(cookie.getValue());
+            log.info("cart : {}", cart);
+
+            MultiValueMap<String, String> multiValueMap = new LinkedMultiValueMap<>();
+            cart.keySet().forEach(key -> {
+                multiValueMap.add(key.toString(), cart.get(key).toString());
+            });
+
+
+            HttpHeaders headers = new HttpHeaders();
+            HttpEntity<String> entity = new HttpEntity<>(headers);
+
+            UriComponents uri = UriComponentsBuilder.fromHttpUrl(gatewayConfig.getShopUrl())
+                    .path("/api/service/products/cart").queryParams(multiValueMap).build();
+            log.info("uri123 : {} ", uri);
+
+
+            ResponseDto<List<CartViewResponse>> response = restTemplate.exchange(uri.toUri(),
+                    HttpMethod.GET,
+                    entity,
+                    new ParameterizedTypeReference<ResponseDto<List<CartViewResponse>>>() {
+                    }).getBody();
+
+            log.info("response123213: {}", response.getData());
+
+            Objects.requireNonNull(Objects.requireNonNull(response).getData()).forEach(product -> {
+                if (Boolean.FALSE.equals(product.getIsDeleted())) {
+                    if (Boolean.TRUE.equals(product.getIsEbook())) {
+                        ebookCart.add(product);
+                    } else {
+                        deliveryCart.add(product);
+                    }
+                }
+            });
+        }
         model.addAttribute("ebookCart", ebookCart);
+        log.info("deliveryCart : {}", deliveryCart);
         model.addAttribute("deliveryCart", deliveryCart);
 
         return "main/cart/cart";
@@ -124,3 +129,4 @@ public class CartWebController {
     }
 
 }
+

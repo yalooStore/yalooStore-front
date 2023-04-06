@@ -21,7 +21,6 @@ import java.util.Objects;
 
 import static com.yaloostore.front.member.jwt.AuthUtil.JWT_CODE;
 import static com.yaloostore.front.member.jwt.AuthUtil.UUID_CODE;
-
 @RequiredArgsConstructor
 @Slf4j
 public class CustomLogoutHandler implements LogoutHandler {

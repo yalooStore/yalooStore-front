@@ -4,17 +4,19 @@ import com.yaloostore.front.config.GatewayConfig;
 import com.yaloostore.front.member.dto.request.SignUpRequest;
 import com.yaloostore.front.member.dto.response.SignUpResponse;
 import com.yaloostore.front.member.service.inter.MemberService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.security.core.Transient;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.client.RestTemplate;
 
 
 @Service
 @RequiredArgsConstructor
-
 public class MemberServiceImpl implements MemberService {
 
     private final PasswordEncoder passwordEncoder;
@@ -36,7 +38,8 @@ public class MemberServiceImpl implements MemberService {
                 gatewayConfig.getGatewayServerUrl() + "api/service/members/sign-up",
                 HttpMethod.POST,
                 entity,
-                SignUpResponse.class
+                new ParameterizedTypeReference<SignUpResponse>() {
+                }
         );
 
 

@@ -11,9 +11,8 @@
     <header class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
         <div class="container-fluid px-4 px-lg-5 mt-1 text-end">
             <a class="navbar-brand" href="/">
-                <!--<img src="/docs/4.0/assets/brand/bootstrap-solid.svg" width="30" height="30" class="d-inline-block align-top" alt="">-->
-                <span class="material-icons">search</span>
-                Yaloo Store
+                <img src="/img/cover.png" width="30" height="30" class="d-inline-block align-top" alt="">
+                yalooStore
             </a>
                 <div class="d-flex">
                     <div class="login-btn me-2" sec:authorize="isAnonymous()">
@@ -28,14 +27,14 @@
                         </a>
                     </div>
                     <div class="logout-btn me-3 shadow-none" sec:authorize="isAuthenticated()" >
-                        <a href="/"><span class="material-icons">logout</span></a>
+                        <a href="/logout"><span class="material-icons">logout</span></a>
                     </div>
                     <div class="signup-btn me-2" sec:authorize="isAnonymous()">
                         <a class="btn btn-light shadow-none"
                            href="/members/signup">회원가입</a>
                     </div>
                     <div class="d-flex">
-                        <a class="btn btn-light shadow-none" ><!--th:href="|/cart| ">-->
+                        <a class="btn btn-light shadow-none" href="/cart"><!--th:href="|/cart| ">-->
                             <i class="bi-cart-fill me-1"></i>
                             Cart
                             <span class="badge bg-dark text-white ms-1 rounded-pill">0</span>

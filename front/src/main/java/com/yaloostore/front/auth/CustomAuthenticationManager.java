@@ -36,7 +36,7 @@ public class CustomAuthenticationManager implements AuthenticationManager {
     private static final String UUID_HEADER = "UUID_HEADER";
     private static final  String X_EXPIRE_HEADER = "X-Expire";
     private final MemberAdapter memberAdapter;
-    private final RedisTemplate<String, Objects> redisTemplate;
+    private final RedisTemplate<String, Object> redisTemplate;
 
     private final CookieUtils cookieUtils;
 

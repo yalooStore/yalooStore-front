@@ -1,6 +1,7 @@
 package com.yaloostore.front.common.controller;
 
 
+import com.yaloostore.front.common.utils.CookieUtils;
 import com.yaloostore.front.product.dto.response.ProductBookNewStockResponse;
 import com.yaloostore.front.product.service.inter.QuerydslProductSystemService;
 import jakarta.servlet.http.Cookie;
@@ -22,6 +23,8 @@ import static org.springframework.http.HttpHeaders.COOKIE;
 public class HomeController {
 
     //private final QuerydslOrderSystemService querydslOrderSystemService;
+
+    private final CookieUtils cookieUtils;
 
     private final QuerydslProductSystemService querydslProductSystemService;
 
@@ -51,5 +54,7 @@ public class HomeController {
         return "manager/index";
 
     }
+
+
 
 }

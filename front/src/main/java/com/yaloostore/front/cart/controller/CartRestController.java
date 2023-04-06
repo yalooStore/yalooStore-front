@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 import java.util.Objects;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 @RestController
@@ -51,7 +52,6 @@ public class CartRestController {
                     .build();
         }
 
-
         //비회원이 이북을 구매하려 할 땐 에러를 던진다.
         if (Objects.isNull(member) && request.getIsEbook()){
             return ResponseDto.<String>builder()
@@ -64,6 +64,15 @@ public class CartRestController {
         if(Objects.nonNull(member)){
             String loginId = SecurityContextHolder.getContext().getAuthentication().getName();
             cookie = cookieUtils.setupCookie("CART_NO", loginId,60*60*24*30);
+
+            response.addCookie(cookie);
+        }
+
+
+        // 비회원인 경우 비회원용 장바구니 UUID를 발급해서 넣어준다.
+        if(Objects.isNull(cookie)){
+            String uuid = String.valueOf(UUID.randomUUID());
+            cookie = cookieUtils.setupCookie("CART_NO", uuid,  60 * 60 * 24 * 3);
 
             response.addCookie(cookie);
         }

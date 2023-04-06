@@ -4,6 +4,7 @@ package com.yaloostore.front.product.controller;
 import com.yaloostore.front.common.dto.request.PageRequestDto;
 import com.yaloostore.front.common.dto.response.PaginationResponseDto;
 import com.yaloostore.front.product.dto.response.ProductBookResponseDto;
+import com.yaloostore.front.product.dto.response.ProductDetailViewResponse;
 import com.yaloostore.front.product.dto.response.ProductTypeResponseDto;
 import com.yaloostore.front.product.service.inter.ProductTypeSystemService;
 import com.yaloostore.front.product.service.inter.QuerydslProductSystemService;
@@ -12,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -47,23 +49,11 @@ public class ProductWebController {
         model.addAllAttributes(pageMap);
         List<ProductTypeResponseDto> allProductType = productTypeSystemService.findAllProductType();
 
-
-
         model.addAllAttributes(Map.of(
                 "products", products.getDataList(),
                 "typeId", Objects.isNull(typeId) ? "" :typeId,
                 "types", productTypeSystemService.findAllProductType()
         ));
-
-        log.info("get typeId: {}", allProductType.get(1));
-
-        log.info("typeId: {}", typeId);
-
-        log.info("types: {}", productTypeSystemService.findAllProductType());
-
-        log.info("totalpage: {}",products.getTotalPage());
-
-
 
         return "main/product/products";
     }
@@ -77,6 +67,18 @@ public class ProductWebController {
                 "dataList",products.getDataList()
         );
 
+
+    }
+
+
+    @GetMapping("/{productId}")
+    public String getProductDetail(@PathVariable("productId") Long productId,
+                                   Model model){
+
+        ProductDetailViewResponse response = querydslProductSystemService
+                .findProductDetailByProductId(productId);
+        model.addAttribute("productDetail", response);
+        return "main/product/productDetail";
 
     }
 }
