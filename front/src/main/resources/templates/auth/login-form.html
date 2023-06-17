@@ -88,12 +88,12 @@
 <div th:replace="~{common/fragments/header-nonbtn::fragment-header-nonbtn}"></div>
 <!--login form body-->
 <main class="text-center form-signin w-100 m-auto">
-    <form>
-        <img class="mb-4" src="../assets/brand/bootstrap-logo.svg" alt="" width="72" height="57">
+
+    <form action="/member/login", method="post">
         <h1 class="h3 mb-3 fw-normal">sign in</h1>
 
         <div class="form-floating">
-            <input type="memberId" class="form-control" id="floatingInput" placeholder="id">
+            <input type="loginId" class="form-control" id="floatingInput" placeholder="id">
             <label for="floatingInput">Id</label>
         </div>
         <div class="form-floating">

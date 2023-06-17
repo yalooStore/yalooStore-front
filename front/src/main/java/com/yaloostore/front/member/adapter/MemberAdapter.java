@@ -3,11 +3,9 @@ package com.yaloostore.front.member.adapter;
 
 import com.yaloostore.front.config.GatewayConfig;
 import com.yaloostore.front.member.dto.request.LogoutRequest;
+import com.yaloostore.front.member.dto.request.MemberLoginRequest;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
+import org.springframework.http.*;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -52,5 +50,25 @@ public class MemberAdapter {
                 Void.class
         );
     }
+
+
+    /**
+     * 회원이 입력한 로그인 정보를 dto 객체로 만들어 해당 객체를 통해서 인증 서버로 인증 요청을 위임할 때 사용하는 메소드입니다.
+     * */
+    public ResponseEntity<Void> getMemberAuth(MemberLoginRequest memberLoginRequest){
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<MemberLoginRequest> httpEntity = new HttpEntity(memberLoginRequest, headers);
+
+
+        return restTemplate.exchange(
+                gatewayConfig.getAuthUrl() + "/auth/login",
+                HttpMethod.POST,
+                httpEntity,
+                Void.class
+        );
+
+    }
+
 
 }

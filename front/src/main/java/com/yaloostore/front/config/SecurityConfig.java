@@ -13,6 +13,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -47,14 +48,15 @@ public class SecurityConfig {
         http.formLogin()
                 .loginPage("/members/login");
 
+        //세션 대신 jwt 사용으로 해당 작업에서 사용하지 않음을 명시
+        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+
         http.logout()
                 .logoutUrl("/logout")
-                .addLogoutHandler(customLogoutHandler())
-                .logoutSuccessUrl("/");
-
-        http.httpBasic().disable();
+                .addLogoutHandler(customLogoutHandler());
 
         http.addFilterAt(customLoginAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+
 
         http.headers().defaultsDisabled().frameOptions().sameOrigin();
         http.cors().disable();
@@ -71,10 +73,7 @@ public class SecurityConfig {
      * */
     public CustomLoginAuthenticationFilter customLoginAuthenticationFilter(){
 
-
-        CustomLoginAuthenticationFilter customLoginAuthenticationFiler = new CustomLoginAuthenticationFilter("/auth-login");
-
-        customLoginAuthenticationFiler.setAuthenticationManager(customAuthenticationManager());
+        CustomLoginAuthenticationFilter customLoginAuthenticationFiler = new CustomLoginAuthenticationFilter(customAuthenticationManager());
         customLoginAuthenticationFiler.setAuthenticationFailureHandler(authenticationFailureHandler());
 
         return customLoginAuthenticationFiler;

@@ -5,6 +5,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @SpringBootApplication
 @ConfigurationPropertiesScan
 public class FrontApplication {
@@ -12,4 +15,5 @@ public class FrontApplication {
 		SpringApplication.run(FrontApplication.class, args);
 	}
 
-}
+	}
+

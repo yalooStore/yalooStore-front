@@ -3,6 +3,7 @@ package com.yaloostore.front.auth;
 import com.yaloostore.front.common.utils.CookieUtils;
 import com.yaloostore.front.member.adapter.MemberAdapter;
 import com.yaloostore.front.member.dto.request.LoginRequest;
+import com.yaloostore.front.member.dto.request.MemberLoginRequest;
 import com.yaloostore.front.member.exception.InvalidLoginRequestException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -31,7 +32,8 @@ import java.util.Objects;
  * */
 @RequiredArgsConstructor
 public class CustomAuthenticationManager implements AuthenticationManager {
-
+    private static final String AUTHENTICATION = "Authentication";
+    private static final String PREFIX_BEARER = "Bearer ";
 
     private static final String UUID_HEADER = "UUID_HEADER";
     private static final  String X_EXPIRE_HEADER = "X-Expire";
@@ -41,23 +43,22 @@ public class CustomAuthenticationManager implements AuthenticationManager {
     private final CookieUtils cookieUtils;
 
 
+
     /**
-     * JWT 토큰 기반으로 shop 서버에서 유저 정보를 요청한 뒤, UsernamePasswordAuthenticationToken을 만들어 돌려줌
-     *
-     * @param authentication 인증 객체
-     * @return 인증 객체
-     * @throws AuthenticationException 인증 실패 시 발생하는 예외
+     * 들어온 요청을 인증,인가 서버에서 위임해서 해당 jwt를 넘겨받아 해당 토큰이 유효한지 확인하고 유효하다면 해당 정보를 이용해서 작업을 진행할 수 있게 한다.
+     * 해당 작업에서는
      * */
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-        LoginRequest loginRequest = new LoginRequest(
-
+        MemberLoginRequest memberLoginRequest = new MemberLoginRequest(
                 //인증정보 - 사용자 id
                 (String) authentication.getPrincipal(),
                 //인증정보 - 비밀번호
                 (String) authentication.getCredentials()
         );
 
+
+        ResponseEntity<Void> memberAuth = memberAdapter.getMemberAuth(memberLoginRequest);
 
 
 
