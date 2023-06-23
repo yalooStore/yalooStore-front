@@ -1,37 +1,27 @@
 package com.yaloostore.front.auth;
 
-import com.yaloostore.front.auth.exception.InvalidHttpMethodRequestException;
 import com.yaloostore.front.member.exception.InvalidLoginRequestException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.websocket.OnClose;
-import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import java.io.IOException;
 import java.util.Objects;
 
-
 public class CustomLoginAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
 
-    private final AuthenticationManager authenticationManager;
 
     private static final String LOGIN_ID_PARAMETER = "loginId";
     private static final String PASSWORD_PARAMETER = "password";
 
-    private static final AntPathRequestMatcher DEFAULT_FORM_LOGIN_REQUEST_MATCHER = new AntPathRequestMatcher("/members/login", "POST");
+    public CustomLoginAuthenticationFilter(String defaultFilterProcessesUrl) {
+        super(defaultFilterProcessesUrl);
 
-
-    public CustomLoginAuthenticationFilter(AuthenticationManager authenticationManager) {
-        super(DEFAULT_FORM_LOGIN_REQUEST_MATCHER);
-        this.authenticationManager = authenticationManager;
     }
 
 
@@ -41,9 +31,6 @@ public class CustomLoginAuthenticationFilter extends AbstractAuthenticationProce
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException, IOException, ServletException {
 
-        if(!request.getMethod().equals("POST")){
-            throw new InvalidHttpMethodRequestException(request.getMethod().toString());
-        }
 
         String loginId = request.getParameter(LOGIN_ID_PARAMETER);
         String password = request.getParameter(PASSWORD_PARAMETER);
@@ -54,6 +41,6 @@ public class CustomLoginAuthenticationFilter extends AbstractAuthenticationProce
 
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(loginId, password);
 
-        return authenticationManager.authenticate(authenticationToken);
+        return getAuthenticationManager().authenticate(authenticationToken);
     }
 }

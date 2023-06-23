@@ -89,15 +89,16 @@
 <!--login form body-->
 <main class="text-center form-signin w-100 m-auto">
 
-    <form action="/member/login", method="post">
+    <form action="/auth-login" method="post" novalidate="">
+        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
         <h1 class="h3 mb-3 fw-normal">sign in</h1>
 
         <div class="form-floating">
-            <input type="loginId" class="form-control" id="floatingInput" placeholder="id">
+            <input type="loginId" name="loginId" class="form-control" id="floatingInput" placeholder="id">
             <label for="floatingInput">Id</label>
         </div>
         <div class="form-floating">
-            <input type="password" class="form-control" id="floatingPassword" placeholder="Password">
+            <input type="password" name="password" class="form-control" id="floatingPassword" placeholder="Password">
             <label for="floatingPassword">Password</label>
         </div>
 

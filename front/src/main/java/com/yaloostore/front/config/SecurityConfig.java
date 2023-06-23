@@ -45,38 +45,43 @@ public class SecurityConfig {
                 .requestMatchers("/admin/**").hasRole("ROLE_ADMIN")
                 .anyRequest().permitAll());
 
-        http.formLogin()
-                .loginPage("/members/login");
 
-        //세션 대신 jwt 사용으로 해당 작업에서 사용하지 않음을 명시
+
+        http.addFilterAt(customLoginAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+
+        //세션 대신 jwt 사용으로 해당 작업에서 사용하지 않음을 명세
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+
+
+        http.formLogin().loginPage("/members/login");
 
         http.logout()
                 .logoutUrl("/logout")
                 .addLogoutHandler(customLogoutHandler());
 
-        http.addFilterAt(customLoginAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
-
 
         http.headers().defaultsDisabled().frameOptions().sameOrigin();
         http.cors().disable();
         http.csrf().disable();
-        return http.build();
-    }
 
-    public CustomAuthenticationManager customAuthenticationManager(){
-        return new CustomAuthenticationManager(memberAdapter, redisTemplate, cookieUtils);
+        return http.build();
     }
 
     /**
      * UsernamePasswordAuthenticationFilter를 대체하여 사용하는 필터를 빈으로 등록해줍니다.
      * */
+    @Bean
     public CustomLoginAuthenticationFilter customLoginAuthenticationFilter(){
 
-        CustomLoginAuthenticationFilter customLoginAuthenticationFiler = new CustomLoginAuthenticationFilter(customAuthenticationManager());
+        CustomLoginAuthenticationFilter customLoginAuthenticationFiler = new CustomLoginAuthenticationFilter("auth-login");
         customLoginAuthenticationFiler.setAuthenticationFailureHandler(authenticationFailureHandler());
-
+        customLoginAuthenticationFiler.setAuthenticationManager(customAuthenticationManager());
         return customLoginAuthenticationFiler;
+    }
+
+    @Bean
+    public CustomAuthenticationManager customAuthenticationManager(){
+        return new CustomAuthenticationManager(memberAdapter, redisTemplate, cookieUtils);
     }
 
 

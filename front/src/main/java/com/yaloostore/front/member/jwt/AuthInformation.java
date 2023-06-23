@@ -18,19 +18,16 @@ import java.util.List;
 public class AuthInformation {
 
     private String loginId;
-    private String email;
     private String accessToken;
     private List<String> authorities;
     private String expiredTime;
 
     public AuthInformation(MemberResponseDto responseDto,
                             String accessToken,
-                            List<String> authorities,
                             String expiredTime){
         this.loginId = responseDto.getId();
-        this.email = responseDto.getEmail();
         this.accessToken = accessToken;
-        this.authorities = authorities;
+        this.authorities = responseDto.getRoles();
         this.expiredTime = expiredTime;
     }
 }

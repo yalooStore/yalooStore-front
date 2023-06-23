@@ -1,10 +1,13 @@
 package com.yaloostore.front.member.adapter;
 
 
+import com.yalooStore.common_utils.dto.ResponseDto;
 import com.yaloostore.front.config.GatewayConfig;
 import com.yaloostore.front.member.dto.request.LogoutRequest;
 import com.yaloostore.front.member.dto.request.MemberLoginRequest;
+import com.yaloostore.front.member.dto.response.MemberResponseDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
@@ -23,7 +26,7 @@ import java.net.URI;
 public class MemberAdapter {
 
     private final GatewayConfig gatewayConfig;
-    private RestTemplate restTemplate;
+    private final RestTemplate restTemplate;
 
 
     public void logout(String uuid, String accessToken){
@@ -54,6 +57,8 @@ public class MemberAdapter {
 
     /**
      * 회원이 입력한 로그인 정보를 dto 객체로 만들어 해당 객체를 통해서 인증 서버로 인증 요청을 위임할 때 사용하는 메소드입니다.
+     *
+     * 해당 부분은 header로 넘어오는 uuid, jwt accessToken, token expired time 정보를 받으며 body는 해당 사항 없습니다.
      * */
     public ResponseEntity<Void> getMemberAuth(MemberLoginRequest memberLoginRequest){
         HttpHeaders headers = new HttpHeaders();
@@ -69,6 +74,26 @@ public class MemberAdapter {
         );
 
     }
+
+
+    /**
+     * auth 서버에서 넘어온 회원의 토큰이 유효한지를 확인한 뒤 해당 정보를 가지고 회원의 정보를 가져오는 메소드입니다.
+     * */
+    public ResponseEntity<ResponseDto<MemberResponseDto>> getMemberInfo(String loginId){
+
+        HttpHeaders headers = new HttpHeaders();
+        HttpEntity entity = new HttpEntity(headers);
+
+        return restTemplate.exchange(gatewayConfig.getShopUrl() + "/api/service/members/login" + loginId,
+                HttpMethod.GET,
+                entity, new ParameterizedTypeReference<ResponseDto<MemberResponseDto>>() {}
+        );
+
+    }
+
+
+
+
 
 
 }
