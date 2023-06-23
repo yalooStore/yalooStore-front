@@ -5,7 +5,7 @@ import com.yaloostore.front.auth.CustomAuthenticationFailureHandler;
 import com.yaloostore.front.auth.CustomAuthenticationManager;
 import com.yaloostore.front.auth.CustomLoginAuthenticationFilter;
 import com.yaloostore.front.auth.CustomLogoutHandler;
-import com.yaloostore.front.common.utils.CookieUtils;
+import com.yaloostore.front.auth.utils.CookieUtils;
 import com.yaloostore.front.member.adapter.MemberAdapter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -53,7 +53,9 @@ public class SecurityConfig {
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
 
-        http.formLogin().loginPage("/members/login");
+        http.formLogin().loginPage("/members/login")
+                .usernameParameter("loginId")
+                .passwordParameter("password");
 
         http.logout()
                 .logoutUrl("/logout")
@@ -63,7 +65,6 @@ public class SecurityConfig {
         http.headers().defaultsDisabled().frameOptions().sameOrigin();
         http.cors().disable();
         http.csrf().disable();
-
         return http.build();
     }
 
@@ -73,7 +74,7 @@ public class SecurityConfig {
     @Bean
     public CustomLoginAuthenticationFilter customLoginAuthenticationFilter(){
 
-        CustomLoginAuthenticationFilter customLoginAuthenticationFiler = new CustomLoginAuthenticationFilter("auth-login");
+        CustomLoginAuthenticationFilter customLoginAuthenticationFiler = new CustomLoginAuthenticationFilter("/auth-login");
         customLoginAuthenticationFiler.setAuthenticationFailureHandler(authenticationFailureHandler());
         customLoginAuthenticationFiler.setAuthenticationManager(customAuthenticationManager());
         return customLoginAuthenticationFiler;

@@ -1,7 +1,7 @@
 package com.yaloostore.front.common.controller;
 
 
-import com.yaloostore.front.common.utils.CookieUtils;
+import com.yaloostore.front.auth.utils.CookieUtils;
 import com.yaloostore.front.product.dto.response.ProductBookNewStockResponse;
 import com.yaloostore.front.product.service.inter.QuerydslProductSystemService;
 import jakarta.servlet.http.Cookie;

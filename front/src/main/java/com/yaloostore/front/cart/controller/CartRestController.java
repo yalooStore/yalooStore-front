@@ -2,8 +2,8 @@ package com.yaloostore.front.cart.controller;
 
 
 import com.yalooStore.common_utils.dto.ResponseDto;
+import com.yaloostore.front.auth.utils.CookieUtils;
 import com.yaloostore.front.cart.dto.request.CartAddRequest;
-import com.yaloostore.front.common.utils.CookieUtils;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -63,7 +63,7 @@ public class CartRestController {
         //회원 로그인 상태에서 회원이 악의적으로 해당 쿠키를 삭제할 경우 쿠키 재생성
         if(Objects.nonNull(member)){
             String loginId = SecurityContextHolder.getContext().getAuthentication().getName();
-            cookie = cookieUtils.setupCookie("CART_NO", loginId,60*60*24*30);
+            cookie = cookieUtils.createCookie("CART_NO", loginId,60*60*24*30);
 
             response.addCookie(cookie);
         }
@@ -72,7 +72,7 @@ public class CartRestController {
         // 비회원인 경우 비회원용 장바구니 UUID를 발급해서 넣어준다.
         if(Objects.isNull(cookie)){
             String uuid = String.valueOf(UUID.randomUUID());
-            cookie = cookieUtils.setupCookie("CART_NO", uuid,  60 * 60 * 24 * 3);
+            cookie = cookieUtils.createCookie("CART_NO", uuid,  60 * 60 * 24 * 3);
 
             response.addCookie(cookie);
         }

@@ -4,6 +4,7 @@ import com.yaloostore.front.member.exception.InvalidLoginRequestException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -12,7 +13,7 @@ import org.springframework.security.web.authentication.AbstractAuthenticationPro
 
 import java.io.IOException;
 import java.util.Objects;
-
+@Slf4j
 public class CustomLoginAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
 
 
@@ -32,6 +33,7 @@ public class CustomLoginAuthenticationFilter extends AbstractAuthenticationProce
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException, IOException, ServletException {
 
 
+        log.info("====================== front authenticationFilter start ======================");
         String loginId = request.getParameter(LOGIN_ID_PARAMETER);
         String password = request.getParameter(PASSWORD_PARAMETER);
 

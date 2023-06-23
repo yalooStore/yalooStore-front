@@ -58,10 +58,7 @@ public class MemberAuthWebController {
      * 로그인 화면으로 가는 로그인 폼 컨트롤러입니다.
      * */
     @GetMapping("/login")
-    public String loginForm(
-            HttpSession session,
-            @RequestParam(defaultValue = "/", name = "redirect-to") String redirectUrl){
-        session.setAttribute("redirect-to", redirectUrl);
+    public String loginForm(){
         return "auth/login-form";
     }
 

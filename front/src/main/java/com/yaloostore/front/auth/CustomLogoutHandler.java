@@ -1,6 +1,6 @@
 package com.yaloostore.front.auth;
 
-import com.yaloostore.front.common.utils.CookieUtils;
+import com.yaloostore.front.auth.utils.CookieUtils;
 import com.yaloostore.front.member.adapter.MemberAdapter;
 import com.yaloostore.front.member.jwt.AuthInformation;
 import jakarta.servlet.http.Cookie;
@@ -49,7 +49,7 @@ public class CustomLogoutHandler implements LogoutHandler {
         //3. 세션 완전 삭제 작업
         session.invalidate();
 
-        String uuid = cookieUtils.getValue(request.getCookies(), UUID_CODE.getValue());
+        String uuid = cookieUtils.getUuidFromCookie(request.getCookies(), UUID_CODE.getValue());
 
         if(Objects.isNull(uuid)){
             return;
@@ -59,10 +59,10 @@ public class CustomLogoutHandler implements LogoutHandler {
 
         //레디스에서 해당
         redisTemplate.opsForHash().delete(uuid, JWT_CODE.getValue());
-        Cookie cart = cookieUtils.setupCookie("CART_NO","", 0);
+        Cookie cart = cookieUtils.createCookie("CART_NO","", 0);
         response.addCookie(cart);
 
-        Cookie authCookie = cookieUtils.setupCookie(UUID_CODE.getValue(), "", 0);
+        Cookie authCookie = cookieUtils.createCookie(UUID_CODE.getValue(), "", 0);
         response.addCookie(authCookie);
 
         memberAdapter.logout(uuid, authInformation.getAccessToken());

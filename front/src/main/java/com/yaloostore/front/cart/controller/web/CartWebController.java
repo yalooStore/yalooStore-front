@@ -2,8 +2,8 @@ package com.yaloostore.front.cart.controller.web;
 
 
 import com.yalooStore.common_utils.dto.ResponseDto;
+import com.yaloostore.front.auth.utils.CookieUtils;
 import com.yaloostore.front.cart.dto.response.CartViewResponse;
-import com.yaloostore.front.common.utils.CookieUtils;
 import com.yaloostore.front.config.GatewayConfig;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
@@ -68,7 +68,7 @@ public class CartWebController {
         //회원이 해당 쿠키 삭제를 할 경우 다시 쿠키 생성해서 넣어준다 ~
         if (Objects.nonNull(member)) {
             String loginId = SecurityContextHolder.getContext().getAuthentication().getName();
-            cookie = cookieUtils.setupCookie("CART_NO", loginId, 60 * 60 * 24 * 30);
+            cookie = cookieUtils.createCookie("CART_NO", loginId, 60 * 60 * 24 * 30);
 
             log.info("cookie : {}", cookie);
             httpServletResponse.addCookie(cookie);

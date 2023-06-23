@@ -2,18 +2,13 @@ package com.yaloostore.front.auth;
 
 import com.yalooStore.common_utils.dto.ResponseDto;
 import com.yaloostore.front.auth.exception.InvalidHttpHeaderException;
-import com.yaloostore.front.common.utils.CookieUtils;
+import com.yaloostore.front.auth.utils.CookieUtils;
 import com.yaloostore.front.member.adapter.MemberAdapter;
-import com.yaloostore.front.member.dto.request.LoginRequest;
 import com.yaloostore.front.member.dto.request.MemberLoginRequest;
 import com.yaloostore.front.member.dto.response.MemberResponseDto;
-import com.yaloostore.front.member.exception.InvalidLoginRequestException;
 import com.yaloostore.front.member.jwt.AuthInformation;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpHeaders;
@@ -23,10 +18,8 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
+import org.springframework.web.context.request.RequestContextHolder;
 
-import java.io.IOException;
-import java.lang.reflect.Member;
 import java.util.Objects;
 
 import static com.yaloostore.front.auth.utils.AuthUtil.*;
@@ -44,6 +37,7 @@ public class CustomAuthenticationManager implements AuthenticationManager {
     private final RedisTemplate<String, Object> redisTemplate;
 
     private final CookieUtils cookieUtils;
+
 
 
 
@@ -83,6 +77,11 @@ public class CustomAuthenticationManager implements AuthenticationManager {
 
         redisTemplate.opsForHash().put(uuid, JWT.getValue(), authInformation);
 
+        //TODO: 쿠키를 사용해서 uuid를 저장하고 이를 restTemplate Interceptor에 적용해보자
+        HttpServletResponse servletResponse = (HttpServletResponse) Objects.requireNonNull(RequestContextHolder.getRequestAttributes());
+
+        Cookie authCookie = cookieUtils.createCookieWithoutMaxAge(HEADER_UUID.getValue(), uuid);
+        servletResponse.addCookie(authCookie);
 
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(authInformation.getLoginId(), "", authentication.getAuthorities());
 
