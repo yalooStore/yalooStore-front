@@ -38,6 +38,7 @@
 
 
 <body class="bg-light">
+<script type="text/javascript" th:src="@{/js/member/signup.js}"></script>
 
 <div th:replace="~{common/fragments/header-nonbtn::fragment-header-nonbtn}"></div>
 
@@ -63,8 +64,13 @@
 
                         <div class="mb-3">
                             <label for="id" class="form-label text-dark">Id </label>
-                            <input type="text" id="id" th:name="id" class="form-control border-1" placeholder="회원 아이디를 입력해주세요."
-                                   required="">
+                            <div class="col-sm-8">
+                                <input type="text" id="id" th:name="loginId" class="form-control border-1" placeholder="회원 아이디를 입력해주세요."
+                                       required="">
+                            </div>
+                            <div class="col-sm-4" >
+                                <button class="btn btn-light" onclick="checkLoginId()">중복 확인</button>
+                            </div>
                         </div>
                         <div class="mb-3 mb-4">
                             <label for="password" class="form-label text-dark">Password</label>
@@ -74,8 +80,17 @@
 
                         <div class="mb-3 mb-4">
                             <label for="nickname" class="form-label text-dark">Nickname </label>
-                            <input type="text" id="nickname" th:name="nickname" class="form-control border-1"
-                                   placeholder="사용하실 닉네임을 입력해주세요." required="">
+                            <div class="row">
+                                <div class="col-9">
+                                    <input type="text" id="nickname" th:name="nickname" class="form-control border-1"
+                                           placeholder="사용하실 닉네임을 입력해주세요." required="">
+                                </div>
+                                <div class="col-3" >
+
+                                    <button class="btn btn-light" onclick="checkNickname()">중복 확인</button>
+                                </div>
+                            </div>
+
                         </div>
                         <div class="mb-3 mb-4">
                             <label for="gender" class="form-label  text-dark">Gender </label>
@@ -93,8 +108,14 @@
                         </div>
                         <div class="mb-3">
                             <label for="email" class="form-label text-dark">Email </label>
-                            <input type="email" id="email" th:name="emailAddress" class="form-control border-1" placeholder="이메일 주소를 입력해주세요."
-                                   required="">
+
+                            <div class="col-9">
+                                <input type="email" id="email" th:name="emailAddress" class="form-control border-1" placeholder="이메일 주소를 입력해주세요."
+                                                      required="">
+                            </div>
+                            <div class="col-3" >
+                                <button class="btn btn-light" onclick="checkEmail()">중복 확인</button>
+                            </div>
                         </div>
 
                         <div class="mb-3 mb-4">
@@ -106,8 +127,16 @@
 
                         <div class="mb-3 mb-4">
                             <label for="phoneNumber" class="form-label text-dark">PhoneNumber </label>
-                            <input th:name="phoneNumber" type="text" id="phoneNumber" class="form-control border-1"
-                                   placeholder="- 없이 입력해주세요. ex)01077775555" required="">
+
+
+                            <div class="col-9">
+                                <input th:name="phone" type="text" id="phoneNumber" class="form-control border-1"
+                                       placeholder="- 없이 입력해주세요. ex)01077775555" required="">
+                            </div>
+                            <div class="col-3" >
+
+                                <button class="btn btn-light" onclick="checkPhoneNumber()">중복 확인</button>
+                            </div>
                         </div>
 
                         <div class="d-grid">

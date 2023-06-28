@@ -1,4 +1,4 @@
-package com.yaloostore.front.member.jwt;
+package com.yaloostore.front.auth.jwt;
 
 
 import com.yaloostore.front.member.dto.response.MemberResponseDto;
@@ -30,4 +30,5 @@ public class AuthInformation {
         this.authorities = responseDto.getRoles();
         this.expiredTime = expiredTime;
     }
+
 }

@@ -29,51 +29,7 @@ public class MemberAdapter {
     private final RestTemplate restTemplate;
 
 
-    public void logout(String uuid, String accessToken){
-        HttpHeaders headers = new HttpHeaders();
 
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.setBearerAuth(accessToken);
-
-        LogoutRequest logoutRequest = new LogoutRequest(uuid);
-
-        HttpEntity<LogoutRequest> entity = new HttpEntity<>(logoutRequest, headers);
-
-        //Auth(인증, 인가 관련) 서버로 보내야하지만 서버를 지금은 두개만 쓸거라 shop 서버로 보낸다.
-        URI uri = UriComponentsBuilder.fromUriString(gatewayConfig.getShopUrl())
-                .path("/api/service/auth/logout")
-                .encode()
-                .build()
-                .toUri();
-
-        restTemplate.exchange(
-                uri,
-                HttpMethod.POST,
-                entity,
-                Void.class
-        );
-    }
-
-
-    /**
-     * 회원이 입력한 로그인 정보를 dto 객체로 만들어 해당 객체를 통해서 인증 서버로 인증 요청을 위임할 때 사용하는 메소드입니다.
-     *
-     * 해당 부분은 header로 넘어오는 uuid, jwt accessToken, token expired time 정보를 받으며 body는 해당 사항 없습니다.
-     * */
-    public ResponseEntity<Void> getMemberAuth(MemberLoginRequest memberLoginRequest){
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        HttpEntity<MemberLoginRequest> httpEntity = new HttpEntity(memberLoginRequest, headers);
-
-
-        return restTemplate.exchange(
-                gatewayConfig.getAuthUrl() + "/auth/login",
-                HttpMethod.POST,
-                httpEntity,
-                Void.class
-        );
-
-    }
 
 
     /**

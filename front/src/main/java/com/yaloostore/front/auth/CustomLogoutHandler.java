@@ -1,8 +1,9 @@
 package com.yaloostore.front.auth;
 
+import com.yaloostore.front.auth.adapter.AuthAdapter;
 import com.yaloostore.front.auth.utils.CookieUtils;
 import com.yaloostore.front.member.adapter.MemberAdapter;
-import com.yaloostore.front.member.jwt.AuthInformation;
+import com.yaloostore.front.auth.jwt.AuthInformation;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -13,28 +14,22 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.authentication.logout.LogoutFilter;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
-import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 
 import java.util.Objects;
 
-import static com.yaloostore.front.member.jwt.AuthUtil.JWT_CODE;
-import static com.yaloostore.front.member.jwt.AuthUtil.UUID_CODE;
+import static com.yaloostore.front.auth.utils.AuthUtil.HEADER_UUID;
+import static com.yaloostore.front.auth.utils.AuthUtil.JWT;
+
 @RequiredArgsConstructor
 @Slf4j
 public class CustomLogoutHandler implements LogoutHandler {
 
     private final RedisTemplate<String, Object> redisTemplate;
-    private final MemberAdapter memberAdapter;
     private final CookieUtils cookieUtils;
+    private final AuthAdapter authAdapter;
 
 
-    /**
-     * 회원 로그아웃에 사용되는 custom 로그아웃 핸들러
-     *
-     * 세션을 사용해서 로그인을 유지하는 등의 작업을 진행하기 때문에 로그아웃 시에도 세션 삭제 작업이 필요하다.
-     * */
     @Override
     public void logout(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
 
@@ -49,23 +44,22 @@ public class CustomLogoutHandler implements LogoutHandler {
         //3. 세션 완전 삭제 작업
         session.invalidate();
 
-        String uuid = cookieUtils.getUuidFromCookie(request.getCookies(), UUID_CODE.getValue());
+        String uuid = cookieUtils.getUuidFromCookie(request.getCookies(), HEADER_UUID.getValue());
 
         if(Objects.isNull(uuid)){
             return;
         }
 
-        AuthInformation authInformation = (AuthInformation) redisTemplate.opsForHash().get(uuid, JWT_CODE.getValue());
+        AuthInformation authInformation = (AuthInformation) redisTemplate.opsForHash().get(uuid, JWT.getValue());
 
         //레디스에서 해당
-        redisTemplate.opsForHash().delete(uuid, JWT_CODE.getValue());
-        Cookie cart = cookieUtils.createCookie("CART_NO","", 0);
-        response.addCookie(cart);
+        redisTemplate.opsForHash().delete(uuid, JWT.getValue());
 
-        Cookie authCookie = cookieUtils.createCookie(UUID_CODE.getValue(), "", 0);
+
+        Cookie authCookie = cookieUtils.createCookie(HEADER_UUID.getValue(), "", 0);
         response.addCookie(authCookie);
 
-        memberAdapter.logout(uuid, authInformation.getAccessToken());
+        authAdapter.logout(uuid, authInformation.getAccessToken());
 
         SecurityContext context = SecurityContextHolder.getContext();
         SecurityContextHolder.clearContext();

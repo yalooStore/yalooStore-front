@@ -1,13 +1,11 @@
 package com.yaloostore.front.auth.interceptor;
 
 
+import com.yaloostore.front.auth.jwt.AuthInformation;
 import com.yaloostore.front.auth.utils.CookieUtils;
-import com.yaloostore.front.member.jwt.AuthInformation;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import org.apache.tomcat.util.http.fileupload.RequestContext;
-import org.apache.tomcat.util.http.fileupload.servlet.ServletRequestContext;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpRequest;
 import org.springframework.http.client.ClientHttpRequestExecution;

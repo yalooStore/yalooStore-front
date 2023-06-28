@@ -1,12 +1,13 @@
 package com.yaloostore.front.auth;
 
 import com.yalooStore.common_utils.dto.ResponseDto;
+import com.yaloostore.front.auth.adapter.AuthAdapter;
 import com.yaloostore.front.auth.exception.InvalidHttpHeaderException;
 import com.yaloostore.front.auth.utils.CookieUtils;
 import com.yaloostore.front.member.adapter.MemberAdapter;
 import com.yaloostore.front.member.dto.request.MemberLoginRequest;
 import com.yaloostore.front.member.dto.response.MemberResponseDto;
-import com.yaloostore.front.member.jwt.AuthInformation;
+import com.yaloostore.front.auth.jwt.AuthInformation;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -34,6 +35,7 @@ import static com.yaloostore.front.auth.utils.AuthUtil.*;
 @RequiredArgsConstructor
 public class CustomAuthenticationManager implements AuthenticationManager {
     private final MemberAdapter memberAdapter;
+    private final AuthAdapter authAdapter;
     private final RedisTemplate<String, Object> redisTemplate;
 
     private final CookieUtils cookieUtils;
@@ -56,7 +58,7 @@ public class CustomAuthenticationManager implements AuthenticationManager {
                 (String) authentication.getCredentials()
         );
         // auth 서버와 restTemplate 사용한 통신 (해당 통신에는 body는 넘어오지 않고 header부분에 custom하게 설정해줌)
-        ResponseEntity<Void> request = memberAdapter.getMemberAuth(memberLoginRequest);
+        ResponseEntity<Void> request = authAdapter.getMemberAuth(memberLoginRequest);
 
         //받아온 header 정보로 해당 토큰이 유효한지를 확인 해주면 된다.(유효하지 않다면 에러 발생)
         checkValidLoginRequest(request);
@@ -112,7 +114,7 @@ public class CustomAuthenticationManager implements AuthenticationManager {
     private void checkValidLoginRequest(ResponseEntity<Void> request) {
         if(!request.getHeaders().containsKey(HEADER_UUID) ||
                 request.getHeaders().containsKey(HttpHeaders.AUTHORIZATION)){
-            throw new BadCredentialsException("자격 증명이 실패되었습니다. ");
+            throw new BadCredentialsException("자격 증명이 실패되었습니다.");
         }
     }
 }

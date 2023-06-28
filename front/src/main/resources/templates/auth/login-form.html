@@ -90,8 +90,6 @@
 <main class="text-center form-signin w-100 m-auto">
 
     <form action="/auth-login" method="post" novalidate="">
-        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-
         <h1 class="h3 mb-3 fw-normal">sign in</h1>
 
         <div class="form-floating">
@@ -109,6 +107,8 @@
             </label>
         </div>
         <button class="w-100 btn btn-lg border-0 btn-primary mb-lg-5" type="submit">Sign in</button>
+        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+
     </form>
         <!-- Register buttons -->
         <div class="text-center">

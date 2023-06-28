@@ -5,6 +5,7 @@ import com.yaloostore.front.auth.CustomAuthenticationFailureHandler;
 import com.yaloostore.front.auth.CustomAuthenticationManager;
 import com.yaloostore.front.auth.CustomLoginAuthenticationFilter;
 import com.yaloostore.front.auth.CustomLogoutHandler;
+import com.yaloostore.front.auth.adapter.AuthAdapter;
 import com.yaloostore.front.auth.utils.CookieUtils;
 import com.yaloostore.front.member.adapter.MemberAdapter;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +30,7 @@ public class SecurityConfig {
     private final RedisTemplate<String ,Object> redisTemplate;
     private final MemberAdapter memberAdapter;
     private final CookieUtils cookieUtils;
+    private final AuthAdapter authAdapter;
 
 
     /**
@@ -53,9 +55,13 @@ public class SecurityConfig {
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
 
-        http.formLogin().loginPage("/members/login")
+        http.formLogin()
+                .loginPage("/members/login")
                 .usernameParameter("loginId")
-                .passwordParameter("password");
+                .passwordParameter("password")
+                .and()
+                .csrf()
+                .disable();
 
         http.logout()
                 .logoutUrl("/logout")
@@ -64,7 +70,6 @@ public class SecurityConfig {
 
         http.headers().defaultsDisabled().frameOptions().sameOrigin();
         http.cors().disable();
-        http.csrf().disable();
         return http.build();
     }
 
@@ -82,7 +87,7 @@ public class SecurityConfig {
 
     @Bean
     public CustomAuthenticationManager customAuthenticationManager(){
-        return new CustomAuthenticationManager(memberAdapter, redisTemplate, cookieUtils);
+        return new CustomAuthenticationManager(memberAdapter, authAdapter,redisTemplate, cookieUtils);
     }
 
 
@@ -91,7 +96,7 @@ public class SecurityConfig {
      * */
     @Bean
     public CustomLogoutHandler customLogoutHandler() {
-        return new CustomLogoutHandler(redisTemplate, memberAdapter, cookieUtils);
+        return new CustomLogoutHandler(redisTemplate, cookieUtils, authAdapter);
     }
 
     @Bean

@@ -32,10 +32,13 @@ public class CustomLoginAuthenticationFilter extends AbstractAuthenticationProce
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException, IOException, ServletException {
 
-
         log.info("====================== front authenticationFilter start ======================");
         String loginId = request.getParameter(LOGIN_ID_PARAMETER);
         String password = request.getParameter(PASSWORD_PARAMETER);
+
+        log.info("loginId : {}", loginId);
+        log.info("password: {}", password);
+        log.info("http method: {}", request.getMethod());
 
         if(Objects.isNull(loginId) || Objects.isNull(password) || loginId.isBlank() || password.isBlank()){
             throw new InvalidLoginRequestException();
