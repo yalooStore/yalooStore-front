@@ -1,4 +1,4 @@
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+ <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <!-- Required meta tags -->
@@ -38,7 +38,7 @@
 
 
 <body class="bg-light">
-<script type="text/javascript" th:src="@{/js/member/signup.js}"></script>
+<script type="text/javascript" th:src="@{/js/member/signUp.js}"></script>
 
 <div th:replace="~{common/fragments/header-nonbtn::fragment-header-nonbtn}"></div>
 
@@ -58,24 +58,42 @@
 
                         <div class="mb-3">
                             <label for="name" class="form-label text-dark">Name </label>
-                            <input type="text" id="name" th:name="name" class="form-control border-1" placeholder="이름을 입력해주세요."
-                            required="">
+                            <div class="row">
+                                <div class="col-9">
+                                    <input type="text" id="name" th:name="name" class="form-control border-1 col-9" placeholder="이름을 입력해주세요."
+                                           required="" autocomplete="off">
+                                </div>
+                                <div class="col-3">
+                                </div>
+                            </div>
+
                         </div>
 
                         <div class="mb-3">
                             <label for="id" class="form-label text-dark">Id </label>
-                            <div class="col-sm-8">
-                                <input type="text" id="id" th:name="loginId" class="form-control border-1" placeholder="회원 아이디를 입력해주세요."
-                                       required="">
-                            </div>
-                            <div class="col-sm-4" >
-                                <button class="btn btn-light" onclick="checkLoginId()">중복 확인</button>
+                            <div class="row">
+                                <div class="col-9">
+                                    <input type="text" id="id" th:name="loginId" class="form-control border-1" placeholder="회원 아이디를 입력해주세요."
+                                           required="">
+                                </div>
+                                <div class="col-3 d-flex justify-content-around">
+                                    <button class="btn btn-light" type="button" onclick="checkLoginId()">중복 확인</button>
+                                </div>
                             </div>
                         </div>
                         <div class="mb-3 mb-4">
+
                             <label for="password" class="form-label text-dark">Password</label>
-                            <input type="password" id="password" th:name="password" class="form-control border-1"
-                                   placeholder="Password" required="">
+                            <div class="row">
+                                <div class="col-9">
+                                    <input type="password" id="password" th:name="password" class="form-control border-1"
+                                           placeholder="Password" required="">
+                                </div>
+                                <div class="col-3">
+
+                                </div>
+                            </div>
+
                         </div>
 
                         <div class="mb-3 mb-4">
@@ -85,9 +103,8 @@
                                     <input type="text" id="nickname" th:name="nickname" class="form-control border-1"
                                            placeholder="사용하실 닉네임을 입력해주세요." required="">
                                 </div>
-                                <div class="col-3" >
-
-                                    <button class="btn btn-light" onclick="checkNickname()">중복 확인</button>
+                                <div class="col-3 d-flex justify-content-around">
+                                    <button id="checkNicknameBth" type="button" class="btn btn-light checkNicknameBth" onclick="checkNickname()">중복 확인</button>
                                 </div>
                             </div>
 
@@ -95,7 +112,7 @@
                         <div class="mb-3 mb-4">
                             <label for="gender" class="form-label  text-dark">Gender </label>
                             <div class="row g-2">
-                                <div class="col-5">
+                                <div class="col-9">
                                     <select th:name="gender" class="form-select" id="gender" required>
                                         <option value="">성별</option>
                                         <option value="MALE">남성</option>
@@ -106,37 +123,46 @@
                             </div>
 
                         </div>
-                        <div class="mb-3">
+                        <div class="mb-3 mb-4">
                             <label for="email" class="form-label text-dark">Email </label>
-
-                            <div class="col-9">
-                                <input type="email" id="email" th:name="emailAddress" class="form-control border-1" placeholder="이메일 주소를 입력해주세요."
-                                                      required="">
-                            </div>
-                            <div class="col-3" >
-                                <button class="btn btn-light" onclick="checkEmail()">중복 확인</button>
+                            <div class="row">
+                                <div class="col-9">
+                                    <input type="email" id="email" th:name="emailAddress" class="form-control border-1" placeholder="이메일 주소를 입력해주세요."
+                                                          required="">
+                                </div>
+                                <div class="col-3 d-flex justify-content-around">
+                                    <button class="btn btn-light" type="button" id="checkEmailBth" onclick="checkEmail()">중복 확인</button>
+                                </div>
                             </div>
                         </div>
 
                         <div class="mb-3 mb-4">
                             <label for="birthday" class="form-label text-dark">Birthday </label>
-                            <input type="text" id="birthday" class="form-control border-1"
-                                   th:name="birthday"
-                                   placeholder="공백과 기호 없이 입력해주세요. ex)19960320" required="">
+                            <div class="row">
+                                <div class="col-9">
+                                    <input type="text" id="birthday" class="form-control border-1"
+                                           th:name="birthday"
+                                           placeholder="공백과 기호 없이 입력해주세요. ex)19960320" required="">
+                                </div>
+                                <div class="col-3">
+
+                                </div>
+                            </div>
+
                         </div>
 
                         <div class="mb-3 mb-4">
                             <label for="phoneNumber" class="form-label text-dark">PhoneNumber </label>
-
-
-                            <div class="col-9">
-                                <input th:name="phone" type="text" id="phoneNumber" class="form-control border-1"
-                                       placeholder="- 없이 입력해주세요. ex)01077775555" required="">
+                            <div class="row">
+                                <div class="col-9">
+                                    <input th:name="phone" type="text" id="phoneNumber" class="form-control border-1"
+                                           oninput="autoHyphen(this)" maxlength="13" required="">
+                                </div>
+                                <div class="col-3 d-flex justify-content-around">
+                                    <button id="checkPhoneNumberBtn" class="btn btn-light" type="button" onclick="checkPhoneNumber()">중복 확인</button>
+                                </div>
                             </div>
-                            <div class="col-3" >
 
-                                <button class="btn btn-light" onclick="checkPhoneNumber()">중복 확인</button>
-                            </div>
                         </div>
 
                         <div class="d-grid">
@@ -144,10 +170,13 @@
                                 Sign up
                             </button>
                         </div>
+                    </form>
+                    <div class="d-flex justify-content-center">
                         <p class="mt-3 mb-3 text-muted font-14 text-dark">
                             Already have an account? <a href="/members/login"> Sign in.</a>
                         </p>
-                    </form>
+
+                    </div>
                 </div>
             </div>
         </div>
