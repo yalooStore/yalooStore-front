@@ -88,6 +88,26 @@ public class QueryMemberServiceImpl implements QueryMemberService {
 
         return response.getBody().getData();
     }
+
+    @Override
+    public MemberDuplicateDto checkLoginId(String loginId) {
+        log.info("loginId : {}", loginId);
+
+        HttpEntity entity = getEntity();
+
+        URI uri = UriComponentsBuilder.fromUriString(config.getShopUrl())
+                .path(PREFIX_CHECK_PATH+"LoginId/{loginId}")
+                .encode()
+                .build()
+                .expand(loginId)
+                .toUri();
+        ResponseEntity<ResponseDto<MemberDuplicateDto>> response = restTemplate.exchange(uri, HttpMethod.GET, entity, new ParameterizedTypeReference<ResponseDto<MemberDuplicateDto>>() {
+        });
+
+        return response.getBody().getData();
+
+    }
+
     private static HttpEntity getEntity() {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);

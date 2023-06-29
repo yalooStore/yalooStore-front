@@ -34,4 +34,10 @@ public class MemberRestController {
         return queryMemberService.checkPhoneNumber(phone);
     }
 
+    @GetMapping("/checkLoginId/{loginId}")
+    public MemberDuplicateDto checkLoginIdDuplicate(@PathVariable String loginId){
+        return queryMemberService.checkLoginId(loginId);
+    }
+
+
 }

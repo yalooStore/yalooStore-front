@@ -90,6 +90,41 @@ function checkPhoneNumber(){
 
 }
 
+function checkLoginId(){
+    let inputLoginId = document.getElementById("loginId");
+    let checkLoginIdBtn = document.getElementById("checkLoginIdBtn");
+    let loginIdVal = inputLoginId.value;
+
+    const url = `/checkLoginId/${loginIdVal}`;
+
+    let regExp = /^[a-z]+[a-z0-9]{5,19}$/g;
+    let emptyRegex = /\s/g;
+
+    if(regExp.test(loginIdVal) && ! emptyRegex.test(loginIdVal)){
+        fetch(url, {
+            Accept: "application/json",
+            method:"GET"
+        }).then((response) => {
+            // API 서버에서 넘어오는 result 값이 false면 해당 값을 가진 회원이 없음 중복없음을 뜻함
+            if(!response.result){
+                //사용 가능한 경우 input창은 고치지 못하게 바꾸고 버튼도 누르지 못하게 바꾼다,.
+                alert('사용 가능한 회원 아이디입니다.')
+                inputLoginId.readOnly=true;
+                checkLoginIdBtn.disabled = true;
+            }else{
+                alert('이미 사용 중인 휴대전화 번호입니다.')
+            }
+        });
+    } else{
+        alert('휴대전화 번호 형식에 맞게 작성해주세요.')
+    }
+
+}
+
+
+/**
+ * 들어오는 휴대 전화 번호를 양식에 맞게 하이픈(-) 추가해주는 작업
+ * */
 const autoHyphen = (target) => {
     target.value = target.value
         .replace(/[^0-9]/g, '')

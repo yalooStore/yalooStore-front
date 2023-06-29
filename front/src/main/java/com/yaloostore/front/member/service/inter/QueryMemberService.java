@@ -8,5 +8,7 @@ public interface QueryMemberService {
     MemberDuplicateDto checkNickname(String nickname);
     MemberDuplicateDto checkPhoneNumber(String phone);
     MemberDuplicateDto checkEmail(String email);
+    MemberDuplicateDto checkLoginId(String loginId);
+
 
 }

@@ -73,11 +73,11 @@
                             <label for="id" class="form-label text-dark">Id </label>
                             <div class="row">
                                 <div class="col-9">
-                                    <input type="text" id="id" th:name="loginId" class="form-control border-1" placeholder="회원 아이디를 입력해주세요."
+                                    <input type="text" id="loginId" th:name="loginId" class="form-control border-1" placeholder="회원 아이디를 입력해주세요."
                                            required="">
                                 </div>
                                 <div class="col-3 d-flex justify-content-around">
-                                    <button class="btn btn-light" type="button" onclick="checkLoginId()">중복 확인</button>
+                                    <button id="checkLoginIdBtn" class="btn btn-light" type="button" onclick="checkLoginId()">중복 확인</button>
                                 </div>
                             </div>
                         </div>
