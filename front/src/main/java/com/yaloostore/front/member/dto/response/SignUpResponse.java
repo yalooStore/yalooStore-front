@@ -13,16 +13,12 @@ import lombok.ToString;
 @Getter
 @ToString
 @NoArgsConstructor
-@AllArgsConstructor
 public class SignUpResponse {
 
     private Long memberId;
-    private String id;
-    private String nickname;
     private String name;
-    private String gender;
-    private String birthday;
-    private String password;
-    private String phoneNumber;
-    private String emailAddress;
+    private String nickname;
+    private String id;
+    private String grade;
+    private String role;
 }

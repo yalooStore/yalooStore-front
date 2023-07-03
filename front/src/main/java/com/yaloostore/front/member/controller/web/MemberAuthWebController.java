@@ -1,4 +1,4 @@
-package com.yaloostore.front.member.controller;
+package com.yaloostore.front.member.controller.web;
 
 
 import com.yaloostore.front.member.dto.request.SignUpRequest;
@@ -30,25 +30,27 @@ public class MemberAuthWebController {
      * 회원가입 화면으로 이동합니다.
      * */
     @GetMapping("/signup")
-    public String signupForm(){
+    public String signupForm(@ModelAttribute(name = "member") SignUpRequest request){
         return "auth/signup-form";
     }
 
 
     @PostMapping("/signup")
-    public String signup(@Valid SignUpRequest request,
+    public String signup(@Valid @ModelAttribute(name ="member") SignUpRequest request,
                          BindingResult bindingResult,
                          Model model){
 
-        log.info("dto = {}" , request);
-
+        log.info("request : {}",request.getName());
 
         if(bindingResult.hasErrors()){
-            throw new ValidationFailedException(bindingResult);
+            log.info("binding result : {}",bindingResult);
+            log.info(bindingResult.getObjectName());
+            return "redirect:/members/signup";
         }
 
-        SignUpResponse signUpResponse = memberService.signUp(request);
-        model.addAttribute("response", signUpResponse);
+        SignUpResponse response = memberService.signUp(request);
+
+        model.addAttribute("response", response);
 
         return "auth/signup-success";
 
@@ -61,7 +63,6 @@ public class MemberAuthWebController {
     public String loginForm(){
         return "auth/login-form";
     }
-
 
 
 }

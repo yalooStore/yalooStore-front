@@ -52,16 +52,25 @@
                         src="../assets/images/logo.svg" alt=""></a>
 
                 <div class="bg-white p-4 p-lg-8 rounded-3 shadow-lg p-3 mb-5 bg-white rounded">
-                    <form class="signup-form " id = "signup-form" action="/members/signup" th:method="post">
+
+                    <form class="signup-form"
+                          id="signup-form"
+                          action="/members/signup"
+                          method="post"
+                          th:object="${member}">
+
                         <h1 class="mb-2 text-dark text-center pb-2 h3">Sign up</h1>
                         <p class="mb-4 text-center">Please fill in this form to create account!</p>
 
+                        <!--이름-->
                         <div class="mb-3">
                             <label for="name" class="form-label text-dark">Name </label>
                             <div class="row">
                                 <div class="col-9">
                                     <input type="text" id="name" th:name="name" class="form-control border-1 col-9" placeholder="이름을 입력해주세요."
+                                           pattern="^.*(?=.*[가-힣a-z])(?=^.{2,50}).*$"
                                            required="" autocomplete="off">
+                                    <p th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="fieldError"> 이름은 한글로 2~50자까지만 허용합니다 올바르게 작성해주세요 </p>
                                 </div>
                                 <div class="col-3">
                                 </div>
@@ -69,12 +78,14 @@
 
                         </div>
 
+                        <!--이름-->
                         <div class="mb-3">
-                            <label for="id" class="form-label text-dark">Id </label>
+                            <label for="id" class="form-label text-dark">Login Id </label>
                             <div class="row">
                                 <div class="col-9">
-                                    <input type="text" id="loginId" th:name="loginId" class="form-control border-1" placeholder="회원 아이디를 입력해주세요."
+                                    <input type="text" id="id" th:name="id" class="form-control border-1" placeholder="회원 아이디를 입력해주세요."
                                            required="">
+                                    <p th:if="${#fields.hasErrors('id')}" th:errors="*{id}" class="fieldError"> 회원 로그인 아이디는 영문과 하나 이상의 숫자의 조합으로 작성해주세요. </p>
                                 </div>
                                 <div class="col-3 d-flex justify-content-around">
                                     <button id="checkLoginIdBtn" class="btn btn-light" type="button" onclick="checkLoginId()">중복 확인</button>
@@ -88,6 +99,8 @@
                                 <div class="col-9">
                                     <input type="password" id="password" th:name="password" class="form-control border-1"
                                            placeholder="Password" required="">
+                                    <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="fieldError">비밀번호는 숫자와 영문 그리고 특수기호를 하나 포함하여야 합니다. 다시 작성해주세요 </p>
+
                                 </div>
                                 <div class="col-3">
 
@@ -102,6 +115,7 @@
                                 <div class="col-9">
                                     <input type="text" id="nickname" th:name="nickname" class="form-control border-1"
                                            placeholder="사용하실 닉네임을 입력해주세요." required="">
+                                    <p th:if="${#fields.hasErrors('nickname')}" th:errors="*{nickname}" class="fieldError"> 닉네임은 영문으로 시작해야하며 영문, 숫자, 언더스코어(_)만을 허용합니다. </p>
                                 </div>
                                 <div class="col-3 d-flex justify-content-around">
                                     <button id="checkNicknameBth" type="button" class="btn btn-light checkNicknameBth" onclick="checkNickname()">중복 확인</button>
@@ -110,7 +124,7 @@
 
                         </div>
                         <div class="mb-3 mb-4">
-                            <label for="gender" class="form-label  text-dark">Gender </label>
+                            <label for="gender" class="form-label text-dark">Gender </label>
                             <div class="row g-2">
                                 <div class="col-9">
                                     <select th:name="gender" class="form-select" id="gender" required>
@@ -118,6 +132,7 @@
                                         <option value="MALE">남성</option>
                                         <option value="FEMALE">여성</option>
                                     </select>
+                                    <p th:if="${#fields.hasErrors('gender')}" th:errors="*{gender}" class="fieldError"> 성별을 입력해주세요. </p>
 
                                 </div>
                             </div>
@@ -129,6 +144,8 @@
                                 <div class="col-9">
                                     <input type="email" id="email" th:name="emailAddress" class="form-control border-1" placeholder="이메일 주소를 입력해주세요."
                                                           required="">
+                                    <p th:if="${#fields.hasErrors('emailAddress')}" th:errors="*{emailAddress}" class="fieldError">이메일 형식에 맞게 작성해주세요.</p>
+
                                 </div>
                                 <div class="col-3 d-flex justify-content-around">
                                     <button class="btn btn-light" type="button" id="checkEmailBth" onclick="checkEmail()">중복 확인</button>
@@ -143,6 +160,8 @@
                                     <input type="text" id="birthday" class="form-control border-1"
                                            th:name="birthday"
                                            placeholder="공백과 기호 없이 입력해주세요. ex)19960320" required="">
+                                    <p th:if="${#fields.hasErrors('birthday')}" th:errors="*{birthday}" class="fieldError">공백과 하이픈(-)은 허용하지 않습니다. 다시 입력해주세요 </p>
+
                                 </div>
                                 <div class="col-3">
 
@@ -155,8 +174,10 @@
                             <label for="phoneNumber" class="form-label text-dark">PhoneNumber </label>
                             <div class="row">
                                 <div class="col-9">
-                                    <input th:name="phone" type="text" id="phoneNumber" class="form-control border-1"
+                                    <input th:name="phoneNumber" type="text" id="phoneNumber" class="form-control border-1"
                                            oninput="autoHyphen(this)" maxlength="13" required="">
+                                    <p th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}" class="fieldError"> 휴대전화 번호는 010, 011 형식만을 지원합니다. 확인하여 다시 작성해주세요 </p>
+
                                 </div>
                                 <div class="col-3 d-flex justify-content-around">
                                     <button id="checkPhoneNumberBtn" class="btn btn-light" type="button" onclick="checkPhoneNumber()">중복 확인</button>

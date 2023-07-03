@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class MemberRestController {
 
-
     private final QueryMemberService queryMemberService;
 
     @GetMapping("/checkNickname/{nickname}")
@@ -35,8 +34,8 @@ public class MemberRestController {
     }
 
     @GetMapping("/checkLoginId/{loginId}")
-    public MemberDuplicateDto checkLoginIdDuplicate(@PathVariable String loginId){
-        return queryMemberService.checkLoginId(loginId);
+    public MemberDuplicateDto checkLoginIdDuplicate(@PathVariable(name = "loginId") String id){
+        return queryMemberService.checkLoginId(id);
     }
 
 

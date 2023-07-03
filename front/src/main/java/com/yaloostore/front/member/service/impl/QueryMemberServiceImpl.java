@@ -45,7 +45,8 @@ public class QueryMemberServiceImpl implements QueryMemberService {
                 .build()
                 .expand(nickname)
                 .toUri();
-        ResponseEntity<ResponseDto<MemberDuplicateDto>> response = restTemplate.exchange(uri, HttpMethod.GET, entity, new ParameterizedTypeReference<ResponseDto<MemberDuplicateDto>>() {
+        ResponseEntity<ResponseDto<MemberDuplicateDto>> response =
+                restTemplate.exchange(uri, HttpMethod.GET, entity, new ParameterizedTypeReference<>() {
         });
 
         return response.getBody().getData();
@@ -64,7 +65,8 @@ public class QueryMemberServiceImpl implements QueryMemberService {
                 .build()
                 .expand(phone)
                 .toUri();
-        ResponseEntity<ResponseDto<MemberDuplicateDto>> response = restTemplate.exchange(uri, HttpMethod.GET, entity, new ParameterizedTypeReference<ResponseDto<MemberDuplicateDto>>() {
+        ResponseEntity<ResponseDto<MemberDuplicateDto>> response = restTemplate
+                .exchange(uri, HttpMethod.GET, entity, new ParameterizedTypeReference<ResponseDto<MemberDuplicateDto>>() {
         });
 
         return response.getBody().getData();
@@ -75,7 +77,6 @@ public class QueryMemberServiceImpl implements QueryMemberService {
         log.info("email : {}", email);
 
         HttpEntity entity = getEntity();
-
 
         URI uri = UriComponentsBuilder.fromUriString(config.getShopUrl())
                 .path(PREFIX_CHECK_PATH+"Email/{email}")
