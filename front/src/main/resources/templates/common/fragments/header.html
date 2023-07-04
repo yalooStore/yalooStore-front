@@ -15,7 +15,7 @@
                 yalooStore
             </a>
                 <div class="d-flex">
-                    <div class="login-btn me-2" sec:authorize="isAnonymous()">
+                    <div class="login-btn me-2" sec:authorize="!isAuthenticated()">
                         <a class="btn btn-primary shadow-none"
                            href="/members/login">
                             로그인
@@ -29,7 +29,7 @@
                     <div class="logout-btn me-3 shadow-none" sec:authorize="isAuthenticated()" >
                         <a href="/logout"><span class="material-icons">logout</span></a>
                     </div>
-                    <div class="signup-btn me-2" sec:authorize="isAnonymous()">
+                    <div class="signup-btn me-2" sec:authorize="!isAuthenticated()">
                         <a class="btn btn-light shadow-none"
                            href="/members/signup">회원가입</a>
                     </div>

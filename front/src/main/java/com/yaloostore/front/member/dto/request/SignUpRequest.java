@@ -8,13 +8,14 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
+import java.security.PublicKey;
 import java.util.PrimitiveIterator;
 
 @Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
+@Setter
 public class SignUpRequest {
 
     @NotBlank(message = "공백과 빈값은 허용하지 않습니다. 올바르게 입력해주세요.")
@@ -52,5 +53,7 @@ public class SignUpRequest {
     @NotBlank(message = "공백과 빈값은 허용하지 않습니다. 올바르게 입력해주세요.")
     @Size(min = 2, max = 100)
     private String emailAddress;
+
+
 
 }

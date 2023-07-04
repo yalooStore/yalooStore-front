@@ -8,6 +8,7 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CookieValue;
@@ -32,6 +33,9 @@ public class HomeController {
     public String main(Model model,
                        @CookieValue(required = false, name = COOKIE)Cookie cookie,
                        HttpServletResponse response){
+
+        String name = SecurityContextHolder.getContext().getAuthentication().getName();
+        log.info("name!!!!!!!! : {}", name);
 
         List<ProductBookNewStockResponse> newOneBookProduct = querydslProductSystemService.findNewOneBookProduct();
         model.addAttribute(

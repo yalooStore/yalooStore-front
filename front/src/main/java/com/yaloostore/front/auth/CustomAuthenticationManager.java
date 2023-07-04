@@ -41,8 +41,6 @@ public class CustomAuthenticationManager implements AuthenticationManager {
     private final CookieUtils cookieUtils;
 
 
-
-
     /**
      * 들어온 요청을 인증,인가 서버에서 위임해서 해당 jwt를 넘겨받아 해당 토큰이 유효한지 확인하고 유효하다면 해당 정보를 이용해서 작업을 진행할 수 있게 한다.
      * 해당 작업에서는
