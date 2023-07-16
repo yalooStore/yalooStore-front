@@ -20,7 +20,7 @@ public class CookieUtils {
         return cookie;
     }
     public Cookie createCookieWithoutMaxAge(String name,String value){
-        Cookie cookie = new Cookie(name,value);
+        Cookie cookie = new Cookie(name, value);
         cookie.setHttpOnly(true);
         cookie.setPath("/");
 

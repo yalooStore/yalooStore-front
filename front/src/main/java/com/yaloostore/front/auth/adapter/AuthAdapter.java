@@ -1,11 +1,12 @@
 package com.yaloostore.front.auth.adapter;
 
 
-import com.yalooStore.common_utils.dto.ResponseDto;
+
 import com.yaloostore.front.config.GatewayConfig;
 import com.yaloostore.front.member.dto.request.LogoutRequest;
 import com.yaloostore.front.member.dto.request.MemberLoginRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
@@ -56,8 +57,8 @@ public class AuthAdapter {
         HttpEntity<LogoutRequest> entity = new HttpEntity<>(logoutRequest, headers);
 
         //Auth(인증, 인가 관련) 서버로 보내야하지만 서버를 지금은 두개만 쓸거라 shop 서버로 보낸다.
-        URI uri = UriComponentsBuilder.fromUriString(gatewayConfig.getShopUrl())
-                .path("/api/service/auth/logout")
+        URI uri = UriComponentsBuilder.fromUriString(gatewayConfig.getAuthUrl())
+                .path("/auth/logout")
                 .encode()
                 .build()
                 .toUri();
@@ -90,4 +91,6 @@ public class AuthAdapter {
         );
 
     }
+
+
 }

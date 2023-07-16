@@ -20,20 +20,20 @@ public class MemberRestController {
 
     private final QueryMemberService queryMemberService;
 
-    @GetMapping("/checkNickname/{nickname}")
+    @GetMapping("/check/checkNickname/{nickname}")
     public MemberDuplicateDto checkNicknameDuplicate(@PathVariable String nickname){
         return queryMemberService.checkNickname(nickname);
     }
-    @GetMapping("/checkEmail/{email}")
+    @GetMapping("/check/checkEmail/{email}")
     public MemberDuplicateDto checkEmailDuplicate(@PathVariable String email){
         return queryMemberService.checkEmail(email);
     }
-    @GetMapping("/checkPhone/{phone}")
+    @GetMapping("/check/checkPhone/{phone}")
     public MemberDuplicateDto checkPhoneDuplicate(@PathVariable String phone){
         return queryMemberService.checkPhoneNumber(phone);
     }
 
-    @GetMapping("/checkLoginId/{loginId}")
+    @GetMapping("/check/checkLoginId/{loginId}")
     public MemberDuplicateDto checkLoginIdDuplicate(@PathVariable(name = "loginId") String id){
         return queryMemberService.checkLoginId(id);
     }

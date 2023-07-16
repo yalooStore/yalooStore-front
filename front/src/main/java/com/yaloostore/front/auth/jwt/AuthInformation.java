@@ -1,9 +1,11 @@
 package com.yaloostore.front.auth.jwt;
 
 
+import com.yaloostore.front.member.dto.response.MemberLoginResponse;
 import com.yaloostore.front.member.dto.response.MemberResponseDto;
 import lombok.*;
 
+import java.io.Serializable;
 import java.util.List;
 
 
@@ -15,17 +17,17 @@ import java.util.List;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class AuthInformation {
+public class AuthInformation implements Serializable {
 
     private String loginId;
     private String accessToken;
     private List<String> authorities;
     private String expiredTime;
 
-    public AuthInformation(MemberResponseDto responseDto,
-                            String accessToken,
-                            String expiredTime){
-        this.loginId = responseDto.getId();
+    public AuthInformation(MemberLoginResponse responseDto,
+                           String accessToken,
+                           String expiredTime){
+        this.loginId = responseDto.getLoginId();
         this.accessToken = accessToken;
         this.authorities = responseDto.getRoles();
         this.expiredTime = expiredTime;

@@ -83,61 +83,57 @@
     <!-- Custom styles for this template -->
 </head>
 
-
 <body class="row pt-0">
-<div th:replace="~{common/fragments/header-nonbtn::fragment-header-nonbtn}"></div>
-<!--login form body-->
-<main class="text-center form-signin w-100 m-auto">
+    <div th:replace="~{common/fragments/header-nonbtn::fragment-header-nonbtn}"></div>
+    <!--login form body-->
+    <main class="text-center form-signin w-100 m-auto">
+        <form action="/auth-login" method="post" novalidate="">
+            <h1 class="h3 mb-3 fw-normal">sign in</h1>
 
-    <form action="/auth-login" method="post" novalidate="">
-        <h1 class="h3 mb-3 fw-normal">sign in</h1>
+            <div class="form-floating">
+                <input type="text" name="loginId" class="form-control" id="floatingInput" placeholder="id">
+                <label for="floatingInput">Id</label>
+            </div>
+            <div class="form-floating">
+                <input type="password" name="password" class="form-control" id="floatingPassword" placeholder="Password">
+                <label for="floatingPassword">Password</label>
+            </div>
 
-        <div class="form-floating">
-            <input type="text" name="loginId" class="form-control" id="floatingInput" placeholder="id">
-            <label for="floatingInput">Id</label>
-        </div>
-        <div class="form-floating">
-            <input type="password" name="password" class="form-control" id="floatingPassword" placeholder="Password">
-            <label for="floatingPassword">Password</label>
-        </div>
+            <div class="checkbox mb-3">
+                <label>
+                    <input type="checkbox" value="remember-me"> Remember me
+                </label>
+            </div>
+            <button class="w-100 btn btn-lg border-0 btn-primary mb-lg-5" type="submit">Sign in</button>
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 
-        <div class="checkbox mb-3">
-            <label>
-                <input type="checkbox" value="remember-me"> Remember me
-            </label>
-        </div>
-        <button class="w-100 btn btn-lg border-0 btn-primary mb-lg-5" type="submit">Sign in</button>
-        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+        </form>
+            <!-- Register buttons -->
+            <div class="text-center">
+                <p>Not a member? <a href="/members/signup">Sign up</a></p>
+                <p>or sign up with:</p>
 
-    </form>
-        <!-- Register buttons -->
-        <div class="text-center">
-            <p>Not a member? <a href="/members/signup">Sign up</a></p>
-            <p>or sign up with:</p>
+                <button type="button" class="btn btn-link btn-floating mx-1">
+                    <i class="fa fa-facebook-f"></i>
+                </button>
+                <button type="button" class="btn btn-link btn-floating mx-1">
+                    <i class="fa fa-google"></i>
+                </button>
 
-            <button type="button" class="btn btn-link btn-floating mx-1">
-                <i class="fa fa-facebook-f"></i>
-            </button>
-            <button type="button" class="btn btn-link btn-floating mx-1">
-                <i class="fa fa-google"></i>
-            </button>
+                <button type="button" class="btn btn-link btn-floating mx-1">
+                    <i class="fa fa-twitter"></i>
+                </button>
 
-            <button type="button" class="btn btn-link btn-floating mx-1">
-                <i class="fa fa-twitter"></i>
-            </button>
+                <button type="button" class="btn btn-link btn-floating mx-1">
+                    <i class="fa fa-github"></i>
+                </button>
+            </div>
 
-            <button type="button" class="btn btn-link btn-floating mx-1">
-                <i class="fa fa-github"></i>
-            </button>
-        </div>
-
-    <p class="mt-5 mb-3 text-muted">
-        <span>
-            <a href="https://github.com/yeomyaloo">yaloo</a>
-        </span>&copy; 2023
-    </p>
-</main>
-
-
+        <p class="mt-5 mb-3 text-muted">
+            <span>
+                <a href="https://github.com/yeomyaloo">yaloo</a>
+            </span>&copy; 2023
+        </p>
+    </main>
 </body>
 </html>

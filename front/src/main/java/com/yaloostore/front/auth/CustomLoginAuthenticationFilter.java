@@ -25,8 +25,6 @@ public class CustomLoginAuthenticationFilter extends AbstractAuthenticationProce
         super(defaultFilterProcessesUrl);
 
     }
-
-
     /**
      * form 로그인을 시도할 때 작동하는 필터기능으로 입력받은 로그인아이디와 패스워드를 기반으로 인증을 요청합니다.
      * */

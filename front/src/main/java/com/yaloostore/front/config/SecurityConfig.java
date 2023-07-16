@@ -1,10 +1,7 @@
 package com.yaloostore.front.config;
 
 
-import com.yaloostore.front.auth.CustomAuthenticationFailureHandler;
-import com.yaloostore.front.auth.CustomAuthenticationManager;
-import com.yaloostore.front.auth.CustomLoginAuthenticationFilter;
-import com.yaloostore.front.auth.CustomLogoutHandler;
+import com.yaloostore.front.auth.*;
 import com.yaloostore.front.auth.adapter.AuthAdapter;
 import com.yaloostore.front.auth.utils.CookieUtils;
 import com.yaloostore.front.member.adapter.MemberAdapter;
@@ -22,8 +19,8 @@ import org.springframework.security.web.authentication.AuthenticationFailureHand
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
-@EnableWebSecurity
 @RequiredArgsConstructor
+@EnableWebSecurity
 public class SecurityConfig {
 
 
@@ -46,30 +43,22 @@ public class SecurityConfig {
                 .requestMatchers("/manage/**").hasRole("ROLE_ADMIN")
                 .requestMatchers("/admin/**").hasRole("ROLE_ADMIN")
                 .anyRequest().permitAll());
-
-
-
-        http.addFilterAt(customLoginAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
-
-        //세션 대신 jwt 사용으로 해당 작업에서 사용하지 않음을 명세
-        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-
-
         http.formLogin()
                 .loginPage("/members/login")
-                .usernameParameter("loginId")
-                .passwordParameter("password")
-                .and()
-                .csrf()
                 .disable();
 
         http.logout()
                 .logoutUrl("/logout")
                 .addLogoutHandler(customLogoutHandler());
+        //세션 대신 jwt 사용으로 해당 작업에서 사용하지 않음을 명세
+        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
+        http.addFilterAt(customLoginAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 
         http.headers().defaultsDisabled().frameOptions().sameOrigin();
+        http.csrf().disable();
         http.cors().disable();
+
         return http.build();
     }
 
@@ -84,6 +73,7 @@ public class SecurityConfig {
         customLoginAuthenticationFiler.setAuthenticationManager(customAuthenticationManager());
         return customLoginAuthenticationFiler;
     }
+
 
     @Bean
     public CustomAuthenticationManager customAuthenticationManager(){
@@ -104,7 +94,6 @@ public class SecurityConfig {
         return new CustomAuthenticationFailureHandler();
     }
 
-
     /**
      * PasswordEncoder 빈 등록 메소드
      * @return 회원가입 시 비밀번호를 평문으로 저장하지 않기 위해서 등록한 Bean
@@ -115,5 +104,15 @@ public class SecurityConfig {
     }
 
 
+//    @Bean
+//    public FilterRegistrationBean<JwtTokenAuthenticationFilter> jwtTokenAuthenticationFilter(){
+//        FilterRegistrationBean<JwtTokenAuthenticationFilter> registrationFilter = new FilterRegistrationBean<>();
+//
+//        registrationFilter.setFilter(new JwtTokenAuthenticationFilter(cookieUtils, redisTemplate));
+//        registrationFilter.addUrlPatterns("/**/login","/auth-login");
+//
+//        return registrationFilter;
+//    }
+//
 
 }

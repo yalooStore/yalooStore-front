@@ -7,7 +7,7 @@ function checkNickname(){
     let nicknameRegex = /^[가-힣ㄱ-ㅎa-zA-Z0-9._-]{2,15}$/;
     let emptyRegex = /\s/g;
     if(nicknameRegex.test(nicknameValue) && !emptyRegex.test(nicknameValue)){
-        const url = `/checkNickname/${nicknameValue}`;
+        const url = `/check/checkNickname/${nicknameValue}`;
         fetch(url, {
             Accept: "application/json",
             method:"GET"
@@ -36,7 +36,7 @@ function checkEmail(){
     let emailRegex = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/;
     let emptyRegex = /\s/g;
     if(emailRegex.test(emailValue) && !emptyRegex.test(emailValue)){
-        const url= `/checkEmail/${emailValue}`;
+        const url= `/check/checkEmail/${emailValue}`;
         fetch(url, {
             Accept: "application/json",
             method:"GET"
@@ -66,7 +66,7 @@ function checkPhoneNumber(){
     console.log(phoneNumberValue);
     console.log(trimmedPhoneNumber);
 
-    const url = `/checkPhone/${phoneNumberValue}`;
+    const url = `/check/checkPhone/${phoneNumberValue}`;
 
     let phoneRegex = /^01([0|1])\d{4}\d{4}$/;
     let emptyRegex = /\s/g;
@@ -98,7 +98,7 @@ function checkLoginId(){
     let checkLoginIdBtn = document.getElementById("checkLoginIdBtn");
     let loginIdVal = inputLoginId.value;
 
-    const url = `/checkLoginId/${loginIdVal}`;
+    const url = `/check/checkLoginId/${loginIdVal}`;
 
     let regExp = /^[a-z]+[a-z0-9]{5,19}$/g;
     let emptyRegex = /\s/g;
