@@ -104,15 +104,5 @@ public class SecurityConfig {
     }
 
 
-//    @Bean
-//    public FilterRegistrationBean<JwtTokenAuthenticationFilter> jwtTokenAuthenticationFilter(){
-//        FilterRegistrationBean<JwtTokenAuthenticationFilter> registrationFilter = new FilterRegistrationBean<>();
-//
-//        registrationFilter.setFilter(new JwtTokenAuthenticationFilter(cookieUtils, redisTemplate));
-//        registrationFilter.addUrlPatterns("/**/login","/auth-login");
-//
-//        return registrationFilter;
-//    }
-//
 
 }

@@ -1,4 +1,4 @@
-package com.yaloostore.front.auth.jwt;
+package com.yaloostore.front.auth.jwt.meta;
 
 
 import com.yaloostore.front.member.dto.response.MemberLoginResponse;

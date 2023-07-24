@@ -17,6 +17,8 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
 
+import static com.yaloostore.front.auth.utils.AuthUtil.HEADER_UUID;
+
 
 /**
  * 회원 관련 로직 처리를 위한 shop, auth 서버에 restTemplate으로 요청을 위한 어댑터 클래스 입니다.
@@ -37,10 +39,10 @@ public class MemberAdapter {
      * auth 서버에서 넘어온 회원의 토큰이 유효한지를 확인한 뒤 해당 정보를 가지고 회원의 정보를 가져오는 메소드입니다.
      * */
     public ResponseEntity<ResponseDto<MemberLoginResponse>> getMemberInfo(MemberLoginRequest loginRequest,
-                                                                          String token){
+                                                                          String token, String uuid){
         HttpHeaders headers = new HttpHeaders();
-        headers.setBearerAuth(token);
         HttpEntity entity = new HttpEntity(headers);
+
 
         URI uri = UriComponentsBuilder
                 .fromUriString(gatewayConfig.getShopUrl())
@@ -49,8 +51,6 @@ public class MemberAdapter {
                 .build()
                 .expand(loginRequest.getLoginId())
                 .toUri();
-
-        log.info("front -> shop uri? = {}", uri);
 
         return restTemplate.exchange(
                 uri,

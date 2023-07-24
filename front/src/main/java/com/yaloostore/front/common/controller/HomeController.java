@@ -5,6 +5,7 @@ import com.yaloostore.front.auth.utils.CookieUtils;
 import com.yaloostore.front.product.dto.response.ProductBookNewStockResponse;
 import com.yaloostore.front.product.service.inter.QuerydslProductSystemService;
 import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,6 +17,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.List;
 
+import static com.yaloostore.front.auth.utils.AuthUtil.HEADER_UUID;
+import static com.yaloostore.front.auth.utils.AuthUtil.JWT;
 import static org.springframework.http.HttpHeaders.COOKIE;
 
 @Controller
@@ -32,9 +35,13 @@ public class HomeController {
     @GetMapping("/")
     public String main(Model model,
                        @CookieValue(required = false, name = COOKIE)Cookie cookie,
-                       HttpServletResponse response){
+                       HttpServletResponse response, HttpServletRequest request){
+
+        String uuid = cookieUtils.getUuidFromCookie(request.getCookies(), HEADER_UUID.getValue());
+
 
         String name = SecurityContextHolder.getContext().getAuthentication().getName();
+
         log.info("name!!!!!!!! : {}", name);
 
         List<ProductBookNewStockResponse> newOneBookProduct = querydslProductSystemService.findNewOneBookProduct();

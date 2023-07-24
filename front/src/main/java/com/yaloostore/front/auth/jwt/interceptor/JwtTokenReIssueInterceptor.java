@@ -3,7 +3,7 @@ package com.yaloostore.front.auth.jwt.interceptor;
 
 import com.yaloostore.front.auth.adapter.AuthAdapter;
 import com.yaloostore.front.auth.utils.CookieUtils;
-import com.yaloostore.front.auth.jwt.AuthInformation;
+import com.yaloostore.front.auth.jwt.meta.AuthInformation;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +18,6 @@ import org.springframework.web.servlet.HandlerInterceptor;
 
 import java.time.Duration;
 import java.util.Date;
-import java.util.List;
 import java.util.Objects;
 
 import static com.yaloostore.front.auth.utils.AuthUtil.*;
@@ -35,9 +34,10 @@ public class JwtTokenReIssueInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
-
         String requestURI = request.getRequestURI();
         log.info("jwt reissue interceptor request url = {}", requestURI);
+
+
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String uuid = cookieUtils.getUuidFromCookie(request.getCookies(), HEADER_UUID.getValue());
 

@@ -7,14 +7,15 @@ import com.yaloostore.front.auth.utils.CookieUtils;
 import com.yaloostore.front.member.adapter.MemberAdapter;
 import com.yaloostore.front.member.dto.request.MemberLoginRequest;
 import com.yaloostore.front.member.dto.response.MemberLoginResponse;
-import com.yaloostore.front.member.dto.response.MemberResponseDto;
-import com.yaloostore.front.auth.jwt.AuthInformation;
+import com.yaloostore.front.auth.jwt.meta.AuthInformation;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -69,6 +70,7 @@ public class CustomAuthenticationManager implements AuthenticationManager {
         // auth 서버와 restTemplate 사용한 통신 (해당 통신에는 body는 넘어오지 않고 header부분에 custom하게 설정해줌)
         ResponseEntity<Void> memberAuth = authAdapter.getMemberAuth(memberLoginRequest);
 
+
         log.info("memberAuth header auth : {}", memberAuth.getHeaders().get(HEADER_UUID.getValue()));
         log.info("memberAuth header auth : {}", memberAuth.getHeaders().get(HttpHeaders.AUTHORIZATION.toString()));
 
@@ -84,13 +86,15 @@ public class CustomAuthenticationManager implements AuthenticationManager {
         HttpServletResponse servletResponse = Objects.requireNonNull(((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()))
                 .getResponse();
 
-        log.info("request header Authorization? {}", servletRequest.getHeader("Authorization"));
-
         Cookie authCookie = cookieUtils.createCookieWithoutMaxAge(HEADER_UUID.getValue(), uuid);
         servletResponse.addCookie(authCookie);
 
+        log.info("===================== auth server header verify =======================");
+        Logger logger = LoggerFactory.getLogger(getClass());
+        logger.info("Response Headers: {}", servletResponse.getHeaderNames());
+
         //인증에 성공한 회원 객체 정보를 이용해서 실제 회원정보를 저장해둔 api 서버에서 해당 회원의 정보를 가져옵니다. 엑세스 토큰을 넘기는 ..
-        ResponseEntity<ResponseDto<MemberLoginResponse>> memberInfo = memberAdapter.getMemberInfo(memberLoginRequest, accessToken);
+        ResponseEntity<ResponseDto<MemberLoginResponse>> memberInfo = memberAdapter.getMemberInfo(memberLoginRequest, accessToken, uuid);
         MemberLoginResponse memberLoginResponse = memberInfo.getBody().getData();
 
         // redis에 저장할 때 사용하는 직렬화 클래스
@@ -102,8 +106,7 @@ public class CustomAuthenticationManager implements AuthenticationManager {
 
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(authentication.getPrincipal().toString(), "", authorities);
-
-
+        log.info("======================== front manager end =========================");
         return authenticationToken;
     }
 

@@ -3,6 +3,7 @@ package com.yaloostore.front.config;
 import com.yaloostore.front.auth.adapter.AuthAdapter;
 import com.yaloostore.front.auth.jwt.interceptor.JwtTokenReIssueInterceptor;
 import com.yaloostore.front.auth.utils.CookieUtils;
+import com.yaloostore.front.common.interceptor.RequestLoggingInterceptor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -33,7 +34,12 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
         registry.addInterceptor(new JwtTokenReIssueInterceptor(cookieUtils, redisTemplate, authAdapter))
                 .excludePathPatterns("/css/**", "/js/**", "/libs/**", "/**/static/**",
-                        "/img/**", "/","/check/**","/members/login","/auth-login", "/fonts/**", "/assets/**", "/error/**");
+                        "/img/**", "/","/check/**", "/fonts/**", "/assets/**", "/error/**");
+
+
+        registry.addInterceptor(new RequestLoggingInterceptor())
+                .excludePathPatterns("/css/**", "/js/**", "/libs/**", "/**/static/**", "/img/**",
+                        "/","/check/**", "/fonts/**", "/assets/**", "/error/**");
 
     }
 }

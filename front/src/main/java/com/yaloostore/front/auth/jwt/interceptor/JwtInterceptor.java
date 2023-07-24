@@ -1,8 +1,6 @@
 package com.yaloostore.front.auth.jwt.interceptor;
 
-
-import com.yaloostore.front.auth.jwt.AuthInformation;
-import com.yaloostore.front.auth.utils.CookieUtils;
+import com.yaloostore.front.auth.jwt.meta.AuthInformation;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +18,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -34,8 +33,9 @@ public class JwtInterceptor implements ClientHttpRequestInterceptor {
 
     private final RedisTemplate<String, Object> redisTemplate;
 
-    private final List<String> loginPath = List.of("/members/login", "/auth-login","/api/service/products/new/stock/book","/auth/login");
 
+    private final List<String> EXCLUDED_PATHS = Arrays.asList("/api/service/products/new/stock/book",
+            "/error", "/api/service/products/new/stock/book", "/api/service/product-types");
 
     @Override
     public ClientHttpResponse intercept(HttpRequest request, byte[] body, ClientHttpRequestExecution execution
@@ -43,14 +43,13 @@ public class JwtInterceptor implements ClientHttpRequestInterceptor {
         String path = request.getURI().getPath();
         log.info("path={}", path);
 
-        if (loginPath.contains(path)){
+        if (EXCLUDED_PATHS.contains(path)){
             return execution.execute(request, body);
         }
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
         if (!(authentication instanceof AnonymousAuthenticationToken)) {
-            log.info("여기가 과연 실행은 될까? ");
+
             HttpServletRequest servletRequest = Objects.requireNonNull(((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()))
                     .getRequest();
 
@@ -71,7 +70,10 @@ public class JwtInterceptor implements ClientHttpRequestInterceptor {
         return execution.execute(request, body);
     }
 
+
+
     private String getUuidFromCookie(Cookie[] cookies) {
+
         if (Objects.isNull(cookies)) {
             return null;
         }
@@ -80,6 +82,8 @@ public class JwtInterceptor implements ClientHttpRequestInterceptor {
                 return cookie.getValue();
             }
         }
+
         return null;
+
     }
 }

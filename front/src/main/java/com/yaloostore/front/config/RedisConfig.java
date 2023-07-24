@@ -2,66 +2,70 @@ package com.yaloostore.front.config;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.Getter;
 import org.springframework.beans.factory.BeanClassLoaderAware;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializer;
+import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.security.jackson2.SecurityJackson2Modules;
 import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
 import org.springframework.session.web.http.CookieSerializer;
 import org.springframework.session.web.http.DefaultCookieSerializer;
 
 
-/**
- * Redis 사용을 위한 설정 클래스입니다.
- * */
-@Configuration
 @EnableRedisHttpSession
+@Configuration
 public class RedisConfig implements BeanClassLoaderAware {
 
     @Value("${spring.data.redis.host}")
-    private String redisHost;
+    private String host;
 
     @Value("${spring.data.redis.port}")
-    private int redisPort;
+    private int port;
+
+    @Value("${spring.data.redis.password}")
+    private String password;
+
+    @Value("${spring.data.redis.database}")
+    private int database;
+
     private ClassLoader classLoader;
 
-
-    /**
-     * redis 구현체인 lettuce 사용
-     * */
     @Bean
-    public RedisConnectionFactory redisConnectionFactory(){
-        return new LettuceConnectionFactory(redisHost, redisPort);
+    public RedisConnectionFactory redisConnectionFactory() {
+        RedisStandaloneConfiguration configuration = new RedisStandaloneConfiguration();
+        configuration.setHostName(host);
+        configuration.setPort(port);
+        configuration.setPassword(password);
+        configuration.setDatabase(database);
+
+        return new LettuceConnectionFactory(configuration);
     }
 
 
-    /**
-     * RedisTemplate을 사용해서 특정 entity, 여러가지 원하는 타입을 넣어서 사용할 수 있게 하는 설정
-     * */
     @Bean
-    public RedisTemplate<String,Object> redisTemplate(){
+    public RedisTemplate<String, Object> redisTemplate() {
         RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
-
         redisTemplate.setConnectionFactory(redisConnectionFactory());
+        redisTemplate.setKeySerializer(new StringRedisSerializer());
+        redisTemplate.setValueSerializer(new GenericJackson2JsonRedisSerializer());
+        redisTemplate.setHashKeySerializer(new StringRedisSerializer());
+        redisTemplate.setHashValueSerializer(new GenericJackson2JsonRedisSerializer());
+
         return redisTemplate;
     }
 
-    /**
-     * 세션값에 있는 쿠키가 사라지는 것을 방지하기 위해서 빈주입
-     * */
     @Bean
-    public CookieSerializer cookieSerializer(){
+    public CookieSerializer cookieSerializer() {
         DefaultCookieSerializer serializer = new DefaultCookieSerializer();
-
         serializer.setCookieName("SESSION");
-        serializer.setCookieMaxAge(259200);//3일
+        serializer.setCookieMaxAge(259200);     // 3일
         serializer.setCookiePath("/");
 
         return serializer;

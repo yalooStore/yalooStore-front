@@ -43,7 +43,10 @@ public class AuthAdapter {
 
         HttpEntity entity = new HttpEntity(headers);
 
-        return restTemplate.exchange(uri, HttpMethod.POST, entity, Void.class);
+        return restTemplate.exchange(uri,
+                HttpMethod.POST,
+                entity,
+                Void.class);
     }
 
     public void logout(String uuid, String accessToken){
