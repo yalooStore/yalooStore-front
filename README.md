@@ -1,13 +1,59 @@
 # yalooStore-front
 
-# front Server에서 하고 있는 일들
-- 클라이언트의 요청을 받아서 API 서버에 통신해서 해당 요청을 처리하는 역할을 한다.
-- 해당 서버에 로그인, 로그아웃과 같이 인증 처리 요청이 들어오면 해당 요청을 auth server로 넘겨 진행한다.
-  - 이때 auth 서버에서는 해당 회원의 정보를 불러오기 위해서 API 서버와 통신한다.
-  - 이때 front server내에서 로그인 관련 처리는 로그인 폼을 이용해 진행하기 때문에 usernamePasswordAuthenticationFilter를 사용해서 로직 처리를 한다.
-  - 이때 auth 서버에서 넘겨받은 JWT 토큰 정보를 이용해서 로그인 유지를 하는데 이는 redis를 통해서 관리한다.
-- 화면 구성은 SSR(서버사이드렌더링)으로 진행하고 이때 사용하는 템플릿은 thymeleaf를 사용한다.
-- 장바구니에 저장한 상품을 지속하기 위해서 redis를 사용한다.
+## [Project architecture]
+![image](https://github.com/yalooStore/yalooStore-front/assets/81970382/4065dbdb-791d-44b3-a088-921afe50ebdd)
+
+## Features
+### 회원 관리
+- 회원 가입
+- 회원 수정
+- 회원 삭제
+- 회원 로그인
+- 회원 로그아웃
+
+### 인증, 인가
+- 인증/인가 서버에게 발급 받은 JWT 토큰 재발급 요청
+- RestTemplate 사용 시 Header에 회원 인증정보를 추가(Authorization: Bearer JWT AccessToken)
+- 권한별 접근 페이지 구분
+
+### 장바구니
+- 레디스, 쿠키를 사용
+- 장바구니 저장
+  - 회원, 비회원을 구분하여 장바구니 저장 
+- 장바구니 수정
+- 장바구니 삭제
+- 장바구니 내의 상품 만료기간 설정으로 자동 삭제
+  - 회원, 비회원의 장바구니 만료 시간을 다르게 설정 
+
+### 상품
+- 전체 상품 출력
+- 타입별 상품 출력
+- 상품 검색
+- 최근 본 상품
+- 최근 본 상품 삭제
+
+## Tech Stack
+### Languages
+![Java](https://img.shields.io/badge/Java-007396?style=flat-square&logo=Java)
+![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=flat&logo=html5&logoColor=white)
+![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=flat&logo=CSS3&logoColor=white)
+![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=flat&logo=JavaScript&logoColor=white)
+
+### Frameworks
+![SpringBoot](https://img.shields.io/badge/Spring%20Boot-6DB33F?style=flat&logo=SpringBoot&logoColor=white)
+![Spring Security](https://img.shields.io/static/v1?style=flat-square&message=Spring+Security&color=6DB33F&logo=Spring+Security&logoColor=FFFFFF&label=)
+
+### Template Engine
+![Thymeleaf](https://img.shields.io/badge/Thymeleaf-005F0F?style=flat&logo=Thymeleaf&logoColor=white)
+
+### Database
+![Redis](https://img.shields.io/badge/Redis-DC382D?style=flat-square&logo=Redis&logoColor=white)
+
+### Build Tool
+![ApacheMaven](https://img.shields.io/badge/Maven-C71A36?style=flat&logo=ApacheMaven&logoColor=white)
+
+### 형상 관리 전략
+![Git](https://img.shields.io/badge/Git-F05032?style=flat&logo=Git&logoColor=white)
+![GitHub](https://img.shields.io/badge/GitHub-181717?style=flat&logo=GitHub&logoColor=white)
 
 
-#
