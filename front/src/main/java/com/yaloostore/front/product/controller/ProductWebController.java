@@ -29,8 +29,6 @@ public class ProductWebController {
 
 
     private final QuerydslProductSystemService querydslProductSystemService;
-    private final ProductTypeSystemService productTypeSystemService;
-
     /**
      * 사용자용 전체 상품 조회 view 반환 컨트롤러
      * */
@@ -57,6 +55,8 @@ public class ProductWebController {
 
         return "main/product/products";
     }
+
+    private final ProductTypeSystemService productTypeSystemService;
 
     private Map<String, Object> getPage(PaginationResponseDto<ProductBookResponseDto> products) {
 

@@ -18,6 +18,8 @@ import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
+import static com.yaloostore.front.auth.utils.AuthUtil.HEADER_UUID;
+
 @RestController
 @RequestMapping("/cart")
 @RequiredArgsConstructor
@@ -40,7 +42,7 @@ public class CartRestController {
     @PostMapping
     public ResponseDto<String> addToCart(@RequestBody CartAddRequest request,
                                    @CookieValue(value = "CART_NO", required = false) Cookie cookie,
-                                   @CookieValue(value = "AUTH_MEMBER", required = false) Cookie member,
+                                   @CookieValue(value = "HEADER_UUID", required = false) Cookie member,
                                    HttpServletResponse response){
 
         //1개 이하의 수량을 담을 경우 에러를 던진다.
@@ -60,6 +62,7 @@ public class CartRestController {
                     .data("E-Book 구입을 위해서 로그인이 필요합니다")
                     .build();
         }
+
         //회원 로그인 상태에서 회원이 악의적으로 해당 쿠키를 삭제할 경우 쿠키 재생성
         if(Objects.nonNull(member)){
             String loginId = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -94,7 +97,7 @@ public class CartRestController {
         log.info("preQuantity: {}", preQuantity);
 
 
-        // 회원이 E-Book을 1개 이상 담으려고 하는 경우 에러를 던진다. (회원 확인이 필요 없는 이유는 회원이 아니면 이북을 담아둘 수 없음)
+        // 회원이 E-Book을 1개 이상 담으려고 하는 경우 에러를 던진다. (회원 확인이 필요 없는 이유는 회원이 아니면 이북을 담아둘 수 없음 && 위에서 이미 처리)
         if (Objects.nonNull(preQuantity) && Integer.parseInt(preQuantity.toString()) == 1 && request.getIsEbook()){
             return ResponseDto.<String>builder()
                     .success(false)
@@ -109,12 +112,16 @@ public class CartRestController {
         if (Boolean.TRUE.equals(Objects.nonNull(preQuantity) && !request.getIsEbook())){
             quantity += Integer.parseInt(preQuantity.toString());
         }
-
         redisTemplate.opsForHash().put(cookie.getValue(), request.getProductId(), quantity);
 
 
-        //회원, 비회원 구분 없이 7일 뒤에 장바구니에 담아둔 상품 사라지게 설정
-        redisTemplate.expire(cookie.getValue(), 7, TimeUnit.DAYS);
+        if(Objects.isNull(member)){
+            // 비회원의 경우 3일 뒤 쿠키 만료 -> redis 데이터도 3일뒤 삭제
+            redisTemplate.expire(cookie.getValue(), 3, TimeUnit.DAYS);
+        } else{ //회원의 경우 30일 뒤 장바구니 쿠키 삭제 -> redis에 저장된 데이터도 삭제
+            redisTemplate.expire(cookie.getValue(), 30, TimeUnit.DAYS);
+        }
+
 
 
         return ResponseDto.<String>builder()

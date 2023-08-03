@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 public class CartAddRequest {
     private String productId;
     private int quantity;
-
     private Boolean isEbook;
+
+    // 저자 이름, 책 이름, 가격, 갯수, 썸네일,
 }
