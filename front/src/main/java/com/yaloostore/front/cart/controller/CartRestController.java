@@ -71,7 +71,6 @@ public class CartRestController {
             response.addCookie(cookie);
         }
 
-
         // 비회원인 경우 비회원용 장바구니 UUID를 발급해서 넣어준다.
         if(Objects.isNull(cookie)){
             String uuid = String.valueOf(UUID.randomUUID());
@@ -112,6 +111,7 @@ public class CartRestController {
         if (Boolean.TRUE.equals(Objects.nonNull(preQuantity) && !request.getIsEbook())){
             quantity += Integer.parseInt(preQuantity.toString());
         }
+
         redisTemplate.opsForHash().put(cookie.getValue(), request.getProductId(), quantity);
 
 
