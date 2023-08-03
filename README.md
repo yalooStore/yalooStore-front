@@ -1,4 +1,6 @@
 # yalooStore-front
+FE Server는 클라이언트 서버로 클라이언트의 요청을 받고 각각 서버에 요청을 보내 돌려 받은 응답을 클라이언트에게 화면을 통해 보여주는 서버입니다.<br>
+클라이언트에게 보여줄 화면 구성을 위해 SSR(Server-Side-Rendering) 방식중 하나인 타임리프(Thymeleaf)를 사용하고 있습니다. 
 
 ## [Project architecture]
 ![image](https://github.com/yalooStore/yalooStore-front/assets/81970382/4065dbdb-791d-44b3-a088-921afe50ebdd)
