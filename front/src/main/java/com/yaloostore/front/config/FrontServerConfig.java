@@ -1,4 +1,4 @@
-package com.yaloostore.front.common.controller;
+package com.yaloostore.front.config;
 
 
 import lombok.Getter;
