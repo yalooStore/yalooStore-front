@@ -34,6 +34,12 @@ FE Server는 클라이언트 서버로 클라이언트의 요청을 받고 각�
 - 최근 본 상품
 - 최근 본 상품 삭제
 
+### ControllerAdvice
+- 예외 다루기
+  - 에러 상황은 아니지만 비정상적인 접근이라고 판단되는 활동을 Custom Excetpion으로 지정하고 이를 다루기위한 ExceptionHandler 적용을 위한 ControllerAdvice 사용
+- 공통으로 사용되는 데이터 처리
+  - 장바구니 개수와 같이 여러 곳에서 사용되는 데이터를 처리하기 위해서 ControllerAdvice와 @ModelAttribute를 메서드단에 사용하여 공통 데이터 사용 처리
+
 ## Tech Stack
 ### Languages
 ![Java](https://img.shields.io/badge/Java-007396?style=flat&logo=OpenJDK)
