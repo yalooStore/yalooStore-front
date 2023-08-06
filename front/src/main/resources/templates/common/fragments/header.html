@@ -5,14 +5,14 @@
 
 
 <body th:fragment="fragment-header">
+
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
           rel="stylesheet">
 
     <header class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
         <div class="container-fluid px-4 px-lg-5 mt-1 text-end">
             <a class="navbar-brand" href="/">
-                <img src="/img/cover.png" width="30" height="30" class="d-inline-block align-top" alt="">
-                yalooStore
+                <img src="/img/cover.png" width="100" height="50" class="d-inline-block align-top" alt="">
             </a>
                 <div class="d-flex">
                     <div class="login-btn me-2" sec:authorize="!isAuthenticated()">
@@ -37,7 +37,7 @@
                         <a class="btn btn-light shadow-none" href="/cart"><!--th:href="|/cart| ">-->
                             <i class="bi-cart-fill me-1"></i>
                             Cart
-                            <span class="badge bg-dark text-white ms-1 rounded-pill">0</span>
+                            <span class="badge bg-dark text-white ms-1 rounded-pill" th:text="${cartProductCounting}"></span>
                         </a>
                     </div>
                 </div>
