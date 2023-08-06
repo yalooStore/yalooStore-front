@@ -42,16 +42,6 @@
 
     <!--<script type="text/javascript" th:src="@{/js/products/addToCart_SingleSelect.js}"></script>-->
 
-    <style>
-
-        img {
-            width: 300px;
-            height: 150px;
-            object-fit: cover;
-        }
-
-    </style>
-
 
 </head>
 
@@ -119,7 +109,6 @@
         </div>
 
         <!--body content start-->
-
         <div th:each="product, productStat:${products}" class="align-content-center mb-0 mt-3 border-bottom">
 
             <div class="row d-flex justify-content-center align-content-center">
@@ -192,54 +181,54 @@
 
 </script>
 
-    <script>
-        document.querySelectorAll("button[product-id]").forEach(button => {
-            button.addEventListener("click", function() {
-                const productId = this.getAttribute("product-id");
-                addToCart_singleSelect(productId);
-                console.log("Clicked button for Product ID: " + productId);
-            });
+<script>
+    document.querySelectorAll("button[product-id]").forEach(button => {
+        button.addEventListener("click", function() {
+            const productId = this.getAttribute("product-id");
+            addToCart_singleSelect(productId);
+            console.log("Clicked button for Product ID: " + productId);
         });
+    });
 
-        function addToCart_singleSelect(productId){
-            const url = "/cart";
-            const request = {
-                productId: productId,
-                quantity: 1,
-                isEbook : false
-            }
-
-            fetch(url, {
-                method:'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(request)
-            }).then((response)=> {
-                return response.json();
-            }).then(data => {
-                console.log(data.status)
-                if (data.status === 200){
-                    confirmCartViewPage()
-                } else {
-                    alert(data.data)
-                }
-            })
-
+    function addToCart_singleSelect(productId){
+        const url = "/cart";
+        const request = {
+            productId: productId,
+            quantity: 1,
+            isEbook : false
         }
 
-        function confirmCartViewPage(){
-
-            let result;
-            result = confirm("해당 상품이 장바구니에 추가 되었습니다. 장바구니로 이동하시겠습니까?")
-
-            if (result){
-                window.location.href = "/cart";
-            } else{
-                console.log("계속 해당 페이지에 남아있기!~")
+        fetch(url, {
+            method:'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(request)
+        }).then((response)=> {
+            return response.json();
+        }).then(data => {
+            console.log(data.status)
+            if (data.status === 200){
+                confirmCartViewPage()
+            } else {
+                alert(data.data)
             }
+        })
+
+    }
+
+    function confirmCartViewPage(){
+
+        let result;
+        result = confirm("해당 상품이 장바구니에 추가 되었습니다. 장바구니로 이동하시겠습니까?")
+
+        if (result){
+            window.location.href = "/cart";
+        } else{
+            console.log("계속 해당 페이지에 남아있기!~")
         }
-    </script>
+    }
+</script>
 
 
 </body>
