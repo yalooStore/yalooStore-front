@@ -3,17 +3,24 @@ package com.yaloostore.front.common.advice;
 
 import com.yaloostore.front.auth.exception.InvalidHttpHeaderException;
 import com.yaloostore.front.common.exception.*;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ModelAttribute;
+
+import java.util.Map;
+import java.util.Objects;
 
 
 /**
@@ -23,6 +30,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @Slf4j
 @RequiredArgsConstructor
 public class WebControllerAdvice {
+    private final RedisTemplate redisTemplate;
 
     @ExceptionHandler(CustomNotFoundException.class)
     public String handlerNotFound(Exception e, Model model){
@@ -74,6 +82,26 @@ public class WebControllerAdvice {
         model.addAttribute("error", e.getMessage());
         return "common/errors/error";
     }
+
+
+    @ModelAttribute(name = "cartProductCounting")
+    public int setViewHeaderFrag(@CookieValue(required = false, value = "CART_NO") Cookie cartNo){
+        //장바구니가 비어 있는 경우라면?
+        if (Objects.isNull(cartNo)){
+            return 0;
+        }
+
+        if (Objects.nonNull(cartNo)){
+            String uuid = cartNo.getValue();
+            log.info("uuid = {}", uuid);
+
+            Map<String, String> o = redisTemplate.opsForHash().entries(uuid);
+            log.info("size??!?! {}", o.size());
+            return o.size();
+        }
+        return 0;
+    }
+
 
 
 }
