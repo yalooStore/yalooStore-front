@@ -65,3 +65,12 @@ FE Server는 클라이언트 서버로 클라이언트의 요청을 받고 각�
 ![GitHub](https://img.shields.io/badge/GitHub-181717?style=flat&logo=GitHub&logoColor=white)
 
 
+## Proposed Improvement
+### 성능 개선
+- 매번 호출하는 API를 cache 작업으로 대체 예정
+### 뷰페이지 개선
+- 상품 상세보기
+- 담긴 장바구니 상품 목록
+### 기능 구현
+- 상품 검색
+- 캐시를 사용한 최근 본 상품 구현
