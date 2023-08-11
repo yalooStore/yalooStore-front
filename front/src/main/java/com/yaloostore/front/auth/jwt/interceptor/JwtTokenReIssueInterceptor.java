@@ -2,7 +2,7 @@ package com.yaloostore.front.auth.jwt.interceptor;
 
 
 import com.yaloostore.front.auth.adapter.AuthAdapter;
-import com.yaloostore.front.auth.utils.CookieUtils;
+import com.yaloostore.front.common.utils.CookieUtils;
 import com.yaloostore.front.auth.jwt.meta.AuthInformation;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

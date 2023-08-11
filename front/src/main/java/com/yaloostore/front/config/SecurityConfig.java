@@ -3,7 +3,7 @@ package com.yaloostore.front.config;
 
 import com.yaloostore.front.auth.*;
 import com.yaloostore.front.auth.adapter.AuthAdapter;
-import com.yaloostore.front.auth.utils.CookieUtils;
+import com.yaloostore.front.common.utils.CookieUtils;
 import com.yaloostore.front.member.adapter.MemberAdapter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;

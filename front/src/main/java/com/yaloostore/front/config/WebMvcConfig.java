@@ -2,7 +2,7 @@ package com.yaloostore.front.config;
 
 import com.yaloostore.front.auth.adapter.AuthAdapter;
 import com.yaloostore.front.auth.jwt.interceptor.JwtTokenReIssueInterceptor;
-import com.yaloostore.front.auth.utils.CookieUtils;
+import com.yaloostore.front.common.utils.CookieUtils;
 import com.yaloostore.front.common.interceptor.RequestLoggingInterceptor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;

@@ -2,7 +2,7 @@ package com.yaloostore.front.cart.controller;
 
 
 import com.yalooStore.common_utils.dto.ResponseDto;
-import com.yaloostore.front.auth.utils.CookieUtils;
+import com.yaloostore.front.common.utils.CookieUtils;
 import com.yaloostore.front.cart.dto.request.CartAddRequest;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
@@ -17,8 +17,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
-
-import static com.yaloostore.front.auth.utils.AuthUtil.HEADER_UUID;
 
 @RestController
 @RequestMapping("/cart")
@@ -53,6 +51,7 @@ public class CartRestController {
                     .data("수량은 1개 이상 담아주세요")
                     .build();
         }
+
 
         //비회원이 이북을 구매하려 할 땐 에러를 던진다.
         if (Objects.isNull(member) && request.getIsEbook()){

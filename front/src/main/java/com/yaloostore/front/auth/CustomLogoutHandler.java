@@ -1,7 +1,7 @@
 package com.yaloostore.front.auth;
 
 import com.yaloostore.front.auth.adapter.AuthAdapter;
-import com.yaloostore.front.auth.utils.CookieUtils;
+import com.yaloostore.front.common.utils.CookieUtils;
 import com.yaloostore.front.auth.jwt.meta.AuthInformation;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;

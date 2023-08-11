@@ -1,4 +1,4 @@
-package com.yaloostore.front.auth.utils;
+package com.yaloostore.front.common.utils;
 
 
 import jakarta.servlet.http.Cookie;

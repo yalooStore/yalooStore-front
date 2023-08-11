@@ -3,7 +3,7 @@ package com.yaloostore.front.auth;
 import com.yalooStore.common_utils.dto.ResponseDto;
 import com.yaloostore.front.auth.adapter.AuthAdapter;
 import com.yaloostore.front.auth.exception.InvalidHttpHeaderException;
-import com.yaloostore.front.auth.utils.CookieUtils;
+import com.yaloostore.front.common.utils.CookieUtils;
 import com.yaloostore.front.member.adapter.MemberAdapter;
 import com.yaloostore.front.member.dto.request.MemberLoginRequest;
 import com.yaloostore.front.member.dto.response.MemberLoginResponse;

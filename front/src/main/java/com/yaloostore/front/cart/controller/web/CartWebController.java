@@ -2,7 +2,7 @@ package com.yaloostore.front.cart.controller.web;
 
 
 import com.yalooStore.common_utils.dto.ResponseDto;
-import com.yaloostore.front.auth.utils.CookieUtils;
+import com.yaloostore.front.common.utils.CookieUtils;
 import com.yaloostore.front.cart.dto.response.CartViewResponse;
 import com.yaloostore.front.config.GatewayConfig;
 import jakarta.servlet.http.Cookie;
