@@ -8,14 +8,13 @@ import com.yaloostore.front.product.dto.response.ProductDetailViewResponse;
 import com.yaloostore.front.product.dto.response.ProductTypeResponseDto;
 import com.yaloostore.front.product.service.inter.ProductTypeSystemService;
 import com.yaloostore.front.product.service.inter.QuerydslProductSystemService;
+import jakarta.servlet.http.Cookie;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
@@ -27,8 +26,9 @@ import java.util.Objects;
 @Slf4j
 public class ProductWebController {
 
-
     private final QuerydslProductSystemService querydslProductSystemService;
+
+
     /**
      * 사용자용 전체 상품 조회 view 반환 컨트롤러
      * */
