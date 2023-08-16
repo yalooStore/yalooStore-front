@@ -17,7 +17,6 @@ import org.springframework.web.client.RestTemplate;
 @RequiredArgsConstructor
 public class RestTemplateConfig {
 
-
     private final RedisTemplate<String ,Object> redisTemplate;
 
 

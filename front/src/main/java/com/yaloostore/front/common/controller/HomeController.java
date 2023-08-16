@@ -39,8 +39,11 @@ public class HomeController {
 
         String uuid = cookieUtils.getUuidFromCookie(request.getCookies(), HEADER_UUID.getValue());
         String name = SecurityContextHolder.getContext().getAuthentication().getName();
+        Object credentials = SecurityContextHolder.getContext().getAuthentication().getCredentials();
+
 
         log.info("name!!!!!!!! : {}", name);
+        log.info("token !!  : {} ", credentials.toString());
 
         List<ProductBookNewStockResponse> newOneBookProduct = querydslProductSystemService.findNewOneBookProduct();
         model.addAttribute(

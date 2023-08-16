@@ -19,7 +19,7 @@ import org.springframework.session.web.http.CookieSerializer;
 import org.springframework.session.web.http.DefaultCookieSerializer;
 
 
-@EnableRedisHttpSession
+@EnableRedisHttpSession(redisNamespace = "redis:session")
 @Configuration
 public class RedisConfig implements BeanClassLoaderAware {
 

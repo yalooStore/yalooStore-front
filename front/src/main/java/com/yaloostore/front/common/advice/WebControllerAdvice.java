@@ -2,7 +2,10 @@ package com.yaloostore.front.common.advice;
 
 
 import com.yaloostore.front.auth.exception.InvalidHttpHeaderException;
+import com.yaloostore.front.auth.jwt.meta.AuthInformation;
+import com.yaloostore.front.auth.utils.AuthUtil;
 import com.yaloostore.front.common.exception.*;
+import io.jsonwebtoken.Jwt;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -11,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.ui.Model;
@@ -22,6 +26,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
+
+import static com.yaloostore.front.auth.utils.AuthUtil.JWT;
 
 
 /**

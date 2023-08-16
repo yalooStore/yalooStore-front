@@ -82,10 +82,6 @@
 			<artifactId>spring-boot-starter-aop</artifactId>
 		</dependency>
 
-		<dependency>
-			<groupId>org.thymeleaf.extras</groupId>
-			<artifactId>thymeleaf-extras-springsecurity6</artifactId>
-		</dependency>
 
 		<dependency>
 			<groupId>io.jsonwebtoken</groupId>
@@ -104,11 +100,11 @@
 			<scope>runtime</scope>
 		</dependency>
 
+		<!--redis 관련 설정-->
 		<dependency>
 			<groupId>org.springframework.data</groupId>
 			<artifactId>spring-data-redis</artifactId>
 		</dependency>
-
 		<dependency>
 			<groupId>io.lettuce</groupId>
 			<artifactId>lettuce-core</artifactId>
@@ -122,12 +118,10 @@
 			<artifactId>spring-boot-starter-data-redis</artifactId>
 		</dependency>
 
-
 		<dependency>
 			<groupId>org.thymeleaf.extras</groupId>
 			<artifactId>thymeleaf-extras-springsecurity6</artifactId>
 		</dependency>
-
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-oauth2-client</artifactId>
@@ -146,6 +140,11 @@
 			<groupId>com.github.yalooStore</groupId>
 			<artifactId>yalooStore-common-utils</artifactId>
 			<version>v1.0.8</version>
+		</dependency>
+		<dependency>
+			<groupId>com.github.yalooStore</groupId>
+			<artifactId>yalooStore-security-utils</artifactId>
+			<version>0.2.7</version>
 		</dependency>
         <dependency>
             <groupId>org.jetbrains</groupId>

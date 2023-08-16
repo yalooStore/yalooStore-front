@@ -5,6 +5,7 @@ import com.yaloostore.front.auth.*;
 import com.yaloostore.front.auth.adapter.AuthAdapter;
 import com.yaloostore.front.common.utils.CookieUtils;
 import com.yaloostore.front.member.adapter.MemberAdapter;
+import jakarta.servlet.Filter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,6 +18,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.filter.OncePerRequestFilter;
 
 @Configuration
 @RequiredArgsConstructor
@@ -54,12 +56,18 @@ public class SecurityConfig {
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         http.addFilterAt(customLoginAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterAfter(customJwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 
         http.headers().defaultsDisabled().frameOptions().sameOrigin();
         http.csrf().disable();
         http.cors().disable();
 
         return http.build();
+    }
+
+    @Bean
+    public CustomJwtAuthenticationFilter customJwtAuthenticationFilter() {
+        return new CustomJwtAuthenticationFilter(cookieUtils, redisTemplate);
     }
 
     /**

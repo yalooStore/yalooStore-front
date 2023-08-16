@@ -4,7 +4,6 @@ package com.yaloostore.front.member.service.impl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.yalooStore.common_utils.dto.ResponseDto;
 import com.yaloostore.front.config.GatewayConfig;
-import com.yaloostore.front.config.ObjectMapperConfig;
 import com.yaloostore.front.member.dto.response.MemberDuplicateDto;
 import com.yaloostore.front.member.service.inter.QueryMemberService;
 import lombok.RequiredArgsConstructor;

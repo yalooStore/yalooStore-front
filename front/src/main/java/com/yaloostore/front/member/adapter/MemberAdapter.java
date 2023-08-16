@@ -41,6 +41,8 @@ public class MemberAdapter {
     public ResponseEntity<ResponseDto<MemberLoginResponse>> getMemberInfo(MemberLoginRequest loginRequest,
                                                                           String token, String uuid){
         HttpHeaders headers = new HttpHeaders();
+        headers.setBearerAuth(token);
+        headers.add(HEADER_UUID.getValue(), uuid);
         HttpEntity entity = new HttpEntity(headers);
 
 
