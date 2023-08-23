@@ -5,6 +5,8 @@ import com.yaloostore.front.common.dto.response.PaginationResponseDto;
 import com.yaloostore.front.product.dto.response.ProductBookNewStockResponse;
 import com.yaloostore.front.product.dto.response.ProductBookResponseDto;
 import com.yaloostore.front.product.dto.response.ProductDetailViewResponse;
+import com.yaloostore.front.product.dto.response.ProductRecentResponseDto;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -15,6 +17,8 @@ public interface QuerydslProductSystemService {
      * */
     List<ProductBookNewStockResponse> findNewOneBookProduct();
 
+
+    List<ProductRecentResponseDto> findNewArriveProducts(Pageable pageable);
 
     /**
      * 모든 상품(도서)를 가져오는 메소드입니다.
@@ -27,6 +31,8 @@ public interface QuerydslProductSystemService {
      * 해당 상품의 아이디 값으로 상품 상세 정보를 가져옵니다.
      * */
     ProductDetailViewResponse findProductDetailByProductId(Long productId);
+
+
 
 
 }

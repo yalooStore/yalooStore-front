@@ -4,6 +4,7 @@ package com.yaloostore.front.auth.jwt.interceptor;
 import com.yaloostore.front.auth.adapter.AuthAdapter;
 import com.yaloostore.front.common.utils.CookieUtils;
 import com.yaloostore.front.auth.jwt.meta.AuthInformation;
+
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -32,7 +33,9 @@ public class JwtTokenReIssueInterceptor implements HandlerInterceptor {
     private final AuthAdapter authAdapter;
 
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+    public boolean preHandle(HttpServletRequest request,
+                             HttpServletResponse response,
+                             Object handler) throws Exception {
 
         String requestURI = request.getRequestURI();
         log.info("jwt reissue interceptor request url = {}", requestURI);
@@ -41,23 +44,40 @@ public class JwtTokenReIssueInterceptor implements HandlerInterceptor {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String uuid = cookieUtils.getUuidFromCookie(request.getCookies(), HEADER_UUID.getValue());
 
+        log.info("uuid = {}", uuid);
+
+        log.info(String.valueOf(authentication.getClass()));
         if(!(authentication instanceof AnonymousAuthenticationToken)){
             if (Objects.isNull(uuid)){
+                log.info("토큰 재발급이 필요 없음");
                 return true;
             }
+
             tokenReissue(uuid);
+            log.info("토큰 재발급 끝");
         }
         return true;
     }
 
     private void tokenReissue(String uuid) {
         AuthInformation auth = (AuthInformation) redisTemplate.opsForHash().get(uuid, JWT.getValue());
+        log.info("auth expired time = {}", auth.getExpiredTime());
+
+
         if(Objects.nonNull(auth) && isReissueRequired(auth)){
             ResponseEntity<Void> response = authAdapter.tokenReissue(uuid);
+            log.info("message {}", response.getStatusCode());
 
-            String accessToken = response.getHeaders().get(HttpHeaders.AUTHORIZATION).get(0);
+            String accessToken = response.getHeaders().get("Authorization").get(0);
             String expiredTime = response.getHeaders().get(HEADER_EXPIRED_TIME.getValue()).get(0);
 
+            HttpHeaders headers = response.getHeaders();
+
+            headers.getFirst(HttpHeaders.AUTHORIZATION);
+            response.getHeaders().getFirst(HEADER_UUID.getValue());
+            response.getHeaders().getExpires();
+
+            log.info(expiredTime);
             auth.setAccessToken(accessToken);
             auth.setExpiredTime(expiredTime);
 
@@ -66,11 +86,9 @@ public class JwtTokenReIssueInterceptor implements HandlerInterceptor {
         }
     }
 
-    private boolean isReissueRequired(AuthInformation auth) {
-        long expiredTime = Long.parseLong(auth.getExpiredTime());
+    private boolean isReissueRequired(AuthInformation authInfo) {
+        long expiredTime = Long.parseLong(authInfo.getExpiredTime());
         long now = new Date().getTime();
-
-        return expiredTime - (now/1000) > Duration.ofMinutes(59).toSeconds();
-
+        return (expiredTime - (now / 1000) < Duration.ofMinutes(59).toSeconds());
     }
 }

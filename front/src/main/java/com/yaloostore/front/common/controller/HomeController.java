@@ -3,12 +3,16 @@ package com.yaloostore.front.common.controller;
 
 import com.yaloostore.front.common.utils.CookieUtils;
 import com.yaloostore.front.product.dto.response.ProductBookNewStockResponse;
+import com.yaloostore.front.product.dto.response.ProductRecentResponseDto;
 import com.yaloostore.front.product.service.inter.QuerydslProductSystemService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -35,21 +39,25 @@ public class HomeController {
     @GetMapping("/")
     public String main(Model model,
                        @CookieValue(required = false, name = COOKIE)Cookie cookie,
-                       HttpServletResponse response, HttpServletRequest request){
+                       HttpServletResponse response,
+                       HttpServletRequest request){
 
-        String uuid = cookieUtils.getUuidFromCookie(request.getCookies(), HEADER_UUID.getValue());
-        String name = SecurityContextHolder.getContext().getAuthentication().getName();
-        Object credentials = SecurityContextHolder.getContext().getAuthentication().getCredentials();
+        long startTime = System.currentTimeMillis();
+        List<ProductRecentResponseDto> newArriveProducts = querydslProductSystemService.findNewArriveProducts(PageRequest.of(0, 12));
+        long endTime = System.currentTimeMillis();
 
+        model.addAttribute("newArriveProducts", newArriveProducts);
 
-        log.info("name!!!!!!!! : {}", name);
-        log.info("token !!  : {} ", credentials.toString());
-
+        long startTime_notCache = System.currentTimeMillis();
         List<ProductBookNewStockResponse> newOneBookProduct = querydslProductSystemService.findNewOneBookProduct();
+        long endTime_notCache = System.currentTimeMillis();
         model.addAttribute(
                 "newOneBookProduct",
                 querydslProductSystemService.findNewOneBookProduct()
         );
+
+        log.info("api 호출 - 캐시 O : {}", endTime-startTime);
+        log.info("api 호출 - 캐시 x : {}", endTime_notCache-startTime_notCache);
 
         return "main/index";
     }

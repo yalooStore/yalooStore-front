@@ -10,10 +10,16 @@ import jakarta.validation.Valid;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.objenesis.ObjenesisException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import java.security.Security;
+import java.util.Objects;
 
 
 @Slf4j
@@ -61,6 +67,14 @@ public class MemberAuthWebController {
      * */
     @GetMapping("/login")
     public String loginForm(){
+
+
+        //로그인 되어 로그인 유지 중인 회원이라면 로그인 로직에 접근하려 할 때 이를 막아줍니다.
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if(Objects.nonNull(authentication)){
+            return "/";
+        }
+
         return "auth/login-form";
     }
 

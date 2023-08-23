@@ -2,6 +2,7 @@ package com.yaloostore.front.auth.adapter;
 
 
 
+import com.yalooStore.common_utils.dto.ResponseDto;
 import com.yaloostore.front.config.GatewayConfig;
 import com.yaloostore.front.member.dto.request.LogoutRequest;
 import com.yaloostore.front.member.dto.request.MemberLoginRequest;

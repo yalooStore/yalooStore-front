@@ -1,5 +1,6 @@
 package com.yaloostore.front.product.service.impl;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.yalooStore.common_utils.dto.ResponseDto;
 import com.yaloostore.front.common.dto.request.PageRequestDto;
@@ -7,10 +8,13 @@ import com.yaloostore.front.common.dto.response.PaginationResponseDto;
 import com.yaloostore.front.product.dto.response.ProductBookNewStockResponse;
 import com.yaloostore.front.product.dto.response.ProductBookResponseDto;
 import com.yaloostore.front.product.dto.response.ProductDetailViewResponse;
+import com.yaloostore.front.product.dto.response.ProductRecentResponseDto;
 import com.yaloostore.front.product.service.inter.QuerydslProductSystemService;
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -57,6 +61,24 @@ public class QuerydslProductSystemServiceImpl implements QuerydslProductSystemSe
         return Objects.requireNonNull(newOneResponseList);
     }
 
+    @Override
+    public List<ProductRecentResponseDto> findNewArriveProducts(Pageable pageable) {
+
+        String url = UriComponentsBuilder.fromUriString(shopUrl)
+                .path(PATH + "/new-arrivals")
+                .queryParam("size", pageable.getPageSize())
+                .queryParam("page", pageable.getPageNumber())
+                .toUriString();
+
+        ResponseEntity<ResponseDto<List<ProductRecentResponseDto>>> response =
+                restTemplate.exchange(url,
+                        HttpMethod.GET,
+                        getHttpEntity(),
+                        new ParameterizedTypeReference<>() {});
+        return Objects.requireNonNull(response.getBody().getData());
+
+    }
+
     /**
      * {@inheritDoc}
      * */
@@ -70,7 +92,8 @@ public class QuerydslProductSystemServiceImpl implements QuerydslProductSystemSe
                 .encode()
                 .build()
                 .toUri();
-        ResponseEntity<ResponseDto<PaginationResponseDto<ProductBookResponseDto>>> products = restTemplate.exchange(uri, HttpMethod.GET, getHttpEntity(), new ParameterizedTypeReference<ResponseDto<PaginationResponseDto<ProductBookResponseDto>>>(){});
+        ResponseEntity<ResponseDto<PaginationResponseDto<ProductBookResponseDto>>> products = restTemplate.exchange(uri, HttpMethod.GET, getHttpEntity(),
+                new ParameterizedTypeReference<>(){});
 
         return Objects.requireNonNull(products.getBody()).getData();
     }

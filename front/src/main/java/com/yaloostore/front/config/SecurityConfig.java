@@ -7,6 +7,7 @@ import com.yaloostore.front.common.utils.CookieUtils;
 import com.yaloostore.front.member.adapter.MemberAdapter;
 import jakarta.servlet.Filter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.core.RedisTemplate;

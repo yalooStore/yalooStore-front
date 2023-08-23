@@ -85,14 +85,48 @@
         <!--body start-->
         <!-- body - container / new stock / new Item  img-responsive img-responsive-3x4  -->
         <div class="page-body container-xl">
-            <!--slide 1-->
+            <!-- slide 2 -->
+            <div class="row w-75 mt-5 m-auto mb-5 ">
+                <div class="col-12">
+                    <div class="card px-2 pb-2 border-0 shadow p-3 mb-5 bg-white rounded">
+                            <div class="ribbon bg-yellow">
+                                New <br>
+                                Releases
+                            </div>
+                        <h2 class="align-content-center text-center mb-0 mt-3">신작</h2>
+                        <div id="" class="multiple-items col-12 w-100">
+                            <div class="card m-3" th:each="product: ${newArriveProducts}">
+                                <a th:href="|/products/${product.productId}|">
+                                    <img class="card-img-top"
+                                         th:src="${product.getThumbnailUrl()}">
+                                </a>
+                                <div class="card-body">
+                                    <h3 class="card-title mb-1" style="text-overflow:ellipsis; white-space: nowrap; overflow: hidden"
+                                        th:text="${product.productName}"></h3>
+                                    <div style="display: inline">
+                                        <p th:text="|${product.authorName}|" style="display: inline"></p>
+                                        <p style="display: inline" th:text="${product.publisherName}"></p>
+                                    </div><br/>
+                                    <div class="mt-1">
+                                        <span style="text-decoration: line-through;"
+                                              th:text="${#numbers.formatInteger(product.rawPrice, 1, 'COMMA')} + '원'"></span>
+                                        <span>  -></span>
+                                        <strong th:text="${#numbers.formatInteger(product.getDiscountPrice(), 1, 'COMMA')} + '원'"></strong>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--slide 2-->
             <div class="row w-75 mt-5 m-auto">
                 <div class="col-12">
                     <div class="card px-2 pb-2 border-0 shadow p-3 mb-5 bg-white rounded">
                         <div class="ribbon bg-red">
-                                New <br>
-                                Stock
-                            </div>
+                            New <br>
+                            Arrivals
+                        </div>
                         <h2 class="align-content-center text-center mb-0 mt-3">새로 입고된 상품</h2>
                         <div id="newOneProduct" class="multiple-items col-12">
                             <div class="card m-3" th:each="product: ${newOneBookProduct}">
@@ -119,42 +153,8 @@
                     </div>
                 </div>
             </div>
-
-            <!-- slide 2 -->
-            <div class="row w-75 mt-5 m-auto mb-5 ">
-                <div class="col-12">
-                    <div class="card px-2 pb-2 border-0 shadow p-3 mb-5 bg-white rounded">
-                            <div class="ribbon bg-yellow">
-                                New <br>
-                                Item
-                            </div>
-                        <h2 class="align-content-center text-center mb-0 mt-3">신작</h2>
-                        <div id="" class="multiple-items col-12 w-100">
-                            <div class="card m-3" th:each="product: ${newOneBookProduct}">
-                                <a th:href="|/products/${product.productId}|">
-                                    <img class="card-img-top"
-                                         th:src="${product.getThumbnailUrl()}">
-                                </a>
-                                <div class="card-body">
-                                    <h3 class="card-title mb-1" style="text-overflow:ellipsis; white-space: nowrap; overflow: hidden"
-                                        th:text="${product.productName}"></h3>
-                                    <div style="display: inline">
-                                        <p th:text="|${product.authorName}|" style="display: inline"></p>
-                                        <p style="display: inline" th:text="${product.publisherName}"></p>
-                                    </div><br/>
-                                    <div class="mt-1">
-                                        <span style="text-decoration: line-through;"
-                                              th:text="${#numbers.formatInteger(product.rawPrice, 1, 'COMMA')} + '원'"></span>
-                                        <span>  -></span>
-                                        <strong th:text="${#numbers.formatInteger(product.fixedPrice, 1, 'COMMA')} + '원'"></strong>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
+
         <!--footer-->
         <div th:replace="~{common/fragments/footer::fragment-footer}"></div>
 
